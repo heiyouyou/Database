@@ -1,0 +1,196 @@
+mysql> create table class(className varchar(20),id int(11));
+Query OK, 0 rows affected
+
+mysql> select * from class;
+Empty set
+
+mysql> desc class;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| className | varchar(20) | YES  |     | NULL    |       |
+| id        | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set
+
+mysql> alter table class add primary key(id);
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc class;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| className | varchar(20) | YES  |     | NULL    |       |
+| id        | int(11)     | NO   | PRI | 0       |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set
+
+mysql> alter table class add primary key(idkey(id));
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id))' at line 1
+mysql> alter table class add primary key(idkey);
+1072 - Key column 'idkey' doesn't exist in table
+mysql> alter table class add primary key(id);
+1068 - Multiple primary key defined
+mysql> alter table class change id id int(10) not null;
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from class;
+Empty set
+
+mysql> desc class;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| className | varchar(20) | YES  |     | NULL    |       |
+| id        | int(10)     | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set
+
+mysql> alter table class add constraint name primary key(className);
+1068 - Multiple primary key defined
+mysql> create table test(id int(10),score int(5),className varchar(20));
+Query OK, 0 rows affected
+
+mysql> desc test;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(10)     | YES  |     | NULL    |       |
+| score     | int(5)      | YES  |     | NULL    |       |
+| className | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set
+
+mysql> alter table test add constraint idkey primary key(id);
+Query OK, 0 rows affected
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from test;
+Empty set
+
+mysql> desc test;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(10)     | NO   | PRI | 0       |       |
+| score     | int(5)      | YES  |     | NULL    |       |
+| className | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set
+
+mysql> alter table students add class_id int(10);
+Query OK, 4 rows affected
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | 不详    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | 不详    |       |
+| nick     | varchar(20) | YES  |     | 不详    |       |
+| class_id | int(10)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> alter table students add constraint students_fk foreign key(class_id) references class(id);
+Query OK, 4 rows affected
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | 不详    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | 不详    |       |
+| nick     | varchar(20) | YES  |     | 不详    |       |
+| class_id | int(10)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> desc class;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| className | varchar(20) | YES  |     | NULL    |       |
+| id        | int(10)     | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set
+
+mysql> insert into students values('大老师','男','3130454578',22,185,'比企君',1);
+1452 - Cannot add or update a child row: a foreign key constraint fails (`school`.`students`, CONSTRAINT `students_fk` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`))
+mysql> insert into class values('中级班',1);
+Query OK, 1 row affected
+
+mysql> select * from class;
++-----------+----+
+| className | id |
++-----------+----+
+| 中级班    |  1 |
++-----------+----+
+1 row in set
+
+mysql> insert into students values('大老师','男','3130454578',22,185,'比企君',1);
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+------+------------+-----+----------+--------+----------+
+| s_name | sex  | s_no       | age | s_height | nick   | class_id |
++--------+------+------------+-----+----------+--------+----------+
+| 元旦节 | 不详 | 1111111    |  34 | 不详     | 不详   | NULL     |
+| 狂三   | 不详 | 2432423    |  22 | 不详     | 不详   | NULL     |
+| 大老师 | 男   | 3130454578 |  22 | 185      | 比企君 |        1 |
+| 圣诞节 | 男   | 4568799675 |  24 | 176      | 呀呀呀 | NULL     |
+| 平安夜 | 男   | 879943675  |  24 | 178      | 不详   | NULL     |
++--------+------+------------+-----+----------+--------+----------+
+5 rows in set
+
+mysql> delete class where id=1;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id=1' at line 1
+mysql> delete from students where age='34';
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+------+------------+-----+----------+--------+----------+
+| s_name | sex  | s_no       | age | s_height | nick   | class_id |
++--------+------+------------+-----+----------+--------+----------+
+| 狂三   | 不详 | 2432423    |  22 | 不详     | 不详   | NULL     |
+| 大老师 | 男   | 3130454578 |  22 | 185      | 比企君 |        1 |
+| 圣诞节 | 男   | 4568799675 |  24 | 176      | 呀呀呀 | NULL     |
+| 平安夜 | 男   | 879943675  |  24 | 178      | 不详   | NULL     |
++--------+------+------------+-----+----------+--------+----------+
+4 rows in set
+
+mysql> insert into table class values('高级班',2);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table class values('高级班',2)' at line 1
+mysql> insert into table students values('史诗',default,3424234234,25,default,default,2);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table students values('史诗',default,3424234234,25,default,default,2)' at line 1
+mysql> insert into students values('史诗',default,3424234234,25,default,default,2);
+1452 - Cannot add or update a child row: a foreign key constraint fails (`school`.`students`, CONSTRAINT `students_fk` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`))
+mysql> insert into class values('高级班',2);
+Query OK, 1 row affected
+
+mysql> insert into students values('史诗',default,3424234234,25,default,default,2);
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+------+------------+-----+----------+--------+----------+
+| s_name | sex  | s_no       | age | s_height | nick   | class_id |
++--------+------+------------+-----+----------+--------+----------+
+| 狂三   | 不详 | 2432423    |  22 | 不详     | 不详   | NULL     |
+| 大老师 | 男   | 3130454578 |  22 | 185      | 比企君 |        1 |
+| 史诗   | 不详 | 3424234234 |  25 | 不详     | 不详   |        2 |
+| 圣诞节 | 男   | 4568799675 |  24 | 176      | 呀呀呀 | NULL     |
+| 平安夜 | 男   | 879943675  |  24 | 178      | 不详   | NULL     |
++--------+------+------------+-----+----------+--------+----------+
+5 rows in set
+
+mysql> 

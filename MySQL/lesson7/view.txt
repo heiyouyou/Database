@@ -1,0 +1,11 @@
+/*视图创建*/
+create view v_student_info 
+as select students.s_no,students.s_name,students.sex,students.age,class.className from students left join class on students.class_id=class.id;
+create view v_teacher_info 
+as select s_teacher.s_no,s_teacher.s_name,s_teacher.s_sex from s_teacher where s_sex=1;
+/*查询视图*/
+select * from v_student_info;
+select * from v_teacher_info;
+/*删除视图*/
+drop view v_student_info;
+

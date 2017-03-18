@@ -1,0 +1,543 @@
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
++------+------------+-------+-------+----------+
+8 rows in set
+
+mysql> select s_name,s_sex from students group by s_name;
++------------+-------+
+| s_name     | s_sex |
++------------+-------+
+| 四野       | 1     |
+| 小冰       | 2     |
+| 小哈       | 0     |
+| 小方       | 1     |
+| 小明       | 1     |
+| 小雪       | 2     |
+| 雪之下雪乃 | 2     |
+| 黑黝黝     | 1     |
++------------+-------+
+8 rows in set
+
+mysql> select s_name,s_sex,count(s_sex) from students group by s_sex; 
++--------+-------+--------------+
+| s_name | s_sex | count(s_sex) |
++--------+-------+--------------+
+| 小哈   | 0     |            1 |
+| 小方   | 1     |            4 |
+| 小雪   | 2     |            3 |
++--------+-------+--------------+
+3 rows in set
+
+mysql> select s_name,s_sex,count(s_sex) from students group by s_sex,s_name;
+ 
++------------+-------+--------------+
+| s_name     | s_sex | count(s_sex) |
++------------+-------+--------------+
+| 小哈       | 0     |            1 |
+| 四野       | 1     |            1 |
+| 小方       | 1     |            1 |
+| 小明       | 1     |            1 |
+| 黑黝黝     | 1     |            1 |
+| 小冰       | 2     |            1 |
+| 小雪       | 2     |            1 |
+| 雪之下雪乃 | 2     |            1 |
++------------+-------+--------------+
+8 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_sex) from students group by s_sex,s_name; 
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_sex) |
++------------+-------+-------+--------------+
+| 小哈       | 0     |    25 |            1 |
+| 四野       | 1     |    22 |            1 |
+| 小方       | 1     |    18 |            1 |
+| 小明       | 1     |    22 |            1 |
+| 黑黝黝     | 1     |    23 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
++------------+-------+-------+--------------+
+8 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age) from students group by s_sex;
+ 
++--------+-------+-------+--------------+
+| s_name | s_sex | s_age | count(s_age) |
++--------+-------+-------+--------------+
+| 小哈   | 0     |    25 |            1 |
+| 小方   | 1     |    18 |            4 |
+| 小雪   | 2     |    20 |            3 |
++--------+-------+-------+--------------+
+3 rows in set
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
++------+------------+-------+-------+----------+
+8 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age) from students group by s_age;
+ 
++--------+-------+-------+--------------+
+| s_name | s_sex | s_age | count(s_age) |
++--------+-------+-------+--------------+
+| 小方   | 1     |    18 |            2 |
+| 小冰   | 2     |    19 |            1 |
+| 小雪   | 2     |    20 |            1 |
+| 四野   | 1     |    22 |            2 |
+| 黑黝黝 | 1     |    23 |            1 |
+| 小哈   | 0     |    25 |            1 |
++--------+-------+-------+--------------+
+6 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age) from students group by s_age,s_sex;
+ 
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_age) |
++------------+-------+-------+--------------+
+| 小方       | 1     |    18 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 四野       | 1     |    22 |            2 |
+| 黑黝黝     | 1     |    23 |            1 |
+| 小哈       | 0     |    25 |            1 |
++------------+-------+-------+--------------+
+7 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age) from students group by s_age,s_sex,s_name;
+ 
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_age) |
++------------+-------+-------+--------------+
+| 小方       | 1     |    18 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 四野       | 1     |    22 |            1 |
+| 小明       | 1     |    22 |            1 |
+| 黑黝黝     | 1     |    23 |            1 |
+| 小哈       | 0     |    25 |            1 |
++------------+-------+-------+--------------+
+8 rows in set
+
+mysql> select s_name,s_age,count(s_age) from students group by s_age,s_name;
++------------+-------+--------------+
+| s_name     | s_age | count(s_age) |
++------------+-------+--------------+
+| 小方       |    18 |            1 |
+| 雪之下雪乃 |    18 |            1 |
+| 小冰       |    19 |            1 |
+| 小雪       |    20 |            1 |
+| 四野       |    22 |            1 |
+| 小明       |    22 |            1 |
+| 黑黝黝     |    23 |            1 |
+| 小哈       |    25 |            1 |
++------------+-------+--------------+
+8 rows in set
+
+mysql> insert into students values('小方',2,18,168);
+1136 - Column count doesn't match value count at row 1
+mysql> insert into students(s_name,s_sex,s_age,s_height) values('小方',2,18,168);
+Query OK, 1 row affected
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+9 rows in set
+
+mysql> select s_name,s_age,count(s_age) from students group by s_age;
++--------+-------+--------------+
+| s_name | s_age | count(s_age) |
++--------+-------+--------------+
+| 小方   |    18 |            3 |
+| 小冰   |    19 |            1 |
+| 小雪   |    20 |            1 |
+| 四野   |    22 |            2 |
+| 黑黝黝 |    23 |            1 |
+| 小哈   |    25 |            1 |
++--------+-------+--------------+
+6 rows in set
+
+mysql> select s_name,s_age,count(s_age) from students group by s_age,s_name;
++------------+-------+--------------+
+| s_name     | s_age | count(s_age) |
++------------+-------+--------------+
+| 小方       |    18 |            2 |
+| 雪之下雪乃 |    18 |            1 |
+| 小冰       |    19 |            1 |
+| 小雪       |    20 |            1 |
+| 四野       |    22 |            1 |
+| 小明       |    22 |            1 |
+| 黑黝黝     |    23 |            1 |
+| 小哈       |    25 |            1 |
++------------+-------+--------------+
+8 rows in set
+
+mysql> select s_age,count(s_age) from students group by s_age;
++-------+--------------+
+| s_age | count(s_age) |
++-------+--------------+
+|    18 |            3 |
+|    19 |            1 |
+|    20 |            1 |
+|    22 |            2 |
+|    23 |            1 |
+|    25 |            1 |
++-------+--------------+
+6 rows in set
+
+mysql> select s_age,count(s_age) from students group by s_age order by s_age;
++-------+--------------+
+| s_age | count(s_age) |
++-------+--------------+
+|    18 |            3 |
+|    19 |            1 |
+|    20 |            1 |
+|    22 |            2 |
+|    23 |            1 |
+|    25 |            1 |
++-------+--------------+
+6 rows in set
+
+mysql> select s_age,count(s_age) as 个数 from students group by s_age order by s_age;
++-------+------+
+| s_age | 个数 |
++-------+------+
+|    18 |    3 |
+|    19 |    1 |
+|    20 |    1 |
+|    22 |    2 |
+|    23 |    1 |
+|    25 |    1 |
++-------+------+
+6 rows in set
+
+mysql> select s_age '年龄',count(s_age) as 个数 from students group by s_age order by s_age;
++------+------+
+| 年龄 | 个数 |
++------+------+
+|   18 |    3 |
+|   19 |    1 |
+|   20 |    1 |
+|   22 |    2 |
+|   23 |    1 |
+|   25 |    1 |
++------+------+
+6 rows in set
+
+mysql> select s_name,s_age,s_sex,count(s_age)from students group by s_age,s_name,s_sex order by s_age;
++------------+-------+-------+--------------+
+| s_name     | s_age | s_sex | count(s_age) |
++------------+-------+-------+--------------+
+| 小方       |    18 | 1     |            1 |
+| 小方       |    18 | 2     |            1 |
+| 雪之下雪乃 |    18 | 2     |            1 |
+| 小冰       |    19 | 2     |            1 |
+| 小雪       |    20 | 2     |            1 |
+| 四野       |    22 | 1     |            1 |
+| 小明       |    22 | 1     |            1 |
+| 黑黝黝     |    23 | 1     |            1 |
+| 小哈       |    25 | 0     |            1 |
++------------+-------+-------+--------------+
+9 rows in set
+
+mysql> select s_name,s_age,s_sex,count(s_age)from students where s_height='185' group by s_age,s_name,s_sex order by s_age;
++------------+-------+-------+--------------+
+| s_name     | s_age | s_sex | count(s_age) |
++------------+-------+-------+--------------+
+| 雪之下雪乃 |    18 | 2     |            1 |
+| 小冰       |    19 | 2     |            1 |
+| 小雪       |    20 | 2     |            1 |
+| 四野       |    22 | 1     |            1 |
+| 小明       |    22 | 1     |            1 |
+| 黑黝黝     |    23 | 1     |            1 |
+| 小哈       |    25 | 0     |            1 |
++------------+-------+-------+--------------+
+7 rows in set
+
+mysql> select s_name,s_age,s_sex,count(s_age)from students where s_height='185' group by s_age order by s_age;
++------------+-------+-------+--------------+
+| s_name     | s_age | s_sex | count(s_age) |
++------------+-------+-------+--------------+
+| 雪之下雪乃 |    18 | 2     |            1 |
+| 小冰       |    19 | 2     |            1 |
+| 小雪       |    20 | 2     |            1 |
+| 四野       |    22 | 1     |            2 |
+| 黑黝黝     |    23 | 1     |            1 |
+| 小哈       |    25 | 0     |            1 |
++------------+-------+-------+--------------+
+6 rows in set
+
+mysql> select s_name,s_age,s_sex,count(s_age)from students where s_height='185' order by s_age;
++--------+-------+-------+--------------+
+| s_name | s_age | s_sex | count(s_age) |
++--------+-------+-------+--------------+
+| 四野   |    22 | 1     |            7 |
++--------+-------+-------+--------------+
+1 row in set
+
+mysql> select * from group by *;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'group by *' at line 1
+mysql> select * from group by s_name,s_age,s_sex,s_no;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'group by s_name,s_age,s_sex,s_no' at line 1
+mysql> select * from group by s_name,s_age,s_sex,s_no,s_height;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'group by s_name,s_age,s_sex,s_no,s_height' at line 1
+mysql> select * from students group by s_name,s_age,s_sex,s_no,s_height;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    7 | 四野       |    22 | 1     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|    1 | 小方       |    18 | 1     |      175 |
+|   14 | 小方       |    18 | 2     |      168 |
+|   11 | 小明       |    22 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
++------+------------+-------+-------+----------+
+9 rows in set
+
+mysql> select * from students group by s_name;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    7 | 四野       |    22 | 1     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|    1 | 小方       |    18 | 1     |      175 |
+|   11 | 小明       |    22 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
++------+------------+-------+-------+----------+
+8 rows in set
+
+mysql> select * from students group by s_age;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|    1 | 小方   |    18 | 1     |      175 |
+|   13 | 小冰   |    19 | 2     |      185 |
+|    9 | 小雪   |    20 | 2     |      185 |
+|    7 | 四野   |    22 | 1     |      185 |
+|    8 | 黑黝黝 |    23 | 1     |      185 |
+|   10 | 小哈   |    25 | 0     |      185 |
++------+--------+-------+-------+----------+
+6 rows in set
+
+mysql> select *,count(s_age) from students group by s_age;
++------+--------+-------+-------+----------+--------------+
+| s_no | s_name | s_age | s_sex | s_height | count(s_age) |
++------+--------+-------+-------+----------+--------------+
+|    1 | 小方   |    18 | 1     |      175 |            3 |
+|   13 | 小冰   |    19 | 2     |      185 |            1 |
+|    9 | 小雪   |    20 | 2     |      185 |            1 |
+|    7 | 四野   |    22 | 1     |      185 |            2 |
+|    8 | 黑黝黝 |    23 | 1     |      185 |            1 |
+|   10 | 小哈   |    25 | 0     |      185 |            1 |
++------+--------+-------+-------+----------+--------------+
+6 rows in set
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age from students group by s_name,s_sex,s_age;
++------------+-------+-------+
+| s_name     | s_sex | s_age |
++------------+-------+-------+
+| 四野       | 1     |    22 |
+| 小冰       | 2     |    19 |
+| 小哈       | 0     |    25 |
+| 小方       | 1     |    18 |
+| 小方       | 2     |    18 |
+| 小明       | 1     |    22 |
+| 小雪       | 2     |    20 |
+| 雪之下雪乃 | 2     |    18 |
+| 黑黝黝     | 1     |    23 |
++------------+-------+-------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_age) |
++------------+-------+-------+--------------+
+| 四野       | 1     |    22 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小哈       | 0     |    25 |            1 |
+| 小方       | 1     |    18 |            1 |
+| 小方       | 2     |    18 |            1 |
+| 小明       | 1     |    22 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
+| 黑黝黝     | 1     |    23 |            1 |
++------------+-------+-------+--------------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age,s_sex) from students group by s_name,s_sex,s_age;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's_sex) from students group by s_name,s_sex,s_age' at line 1
+mysql> select s_name,s_sex,s_age,count(s_sex) from students group by s_name,s_sex,s_age;
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_sex) |
++------------+-------+-------+--------------+
+| 四野       | 1     |    22 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小哈       | 0     |    25 |            1 |
+| 小方       | 1     |    18 |            1 |
+| 小方       | 2     |    18 |            1 |
+| 小明       | 1     |    22 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
+| 黑黝黝     | 1     |    23 |            1 |
++------------+-------+-------+--------------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_sex) from students group by s_name;
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_sex) |
++------------+-------+-------+--------------+
+| 四野       | 1     |    22 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小哈       | 0     |    25 |            1 |
+| 小方       | 1     |    18 |            2 |
+| 小明       | 1     |    22 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
+| 黑黝黝     | 1     |    23 |            1 |
++------------+-------+-------+--------------+
+8 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_sex) from students;
++--------+-------+-------+--------------+
+| s_name | s_sex | s_age | count(s_sex) |
++--------+-------+-------+--------------+
+| 小方   | 1     |    18 |            9 |
++--------+-------+-------+--------------+
+1 row in set
+
+mysql> select s_name,s_sex,s_age,count(s_sex) from students group by s_sex;
++--------+-------+-------+--------------+
+| s_name | s_sex | s_age | count(s_sex) |
++--------+-------+-------+--------------+
+| 小哈   | 0     |    25 |            1 |
+| 小方   | 1     |    18 |            4 |
+| 小雪   | 2     |    20 |            4 |
++--------+-------+-------+--------------+
+3 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_sex) from students group by s_sex,s_name,s_age having s_age>=19;
++--------+-------+-------+--------------+
+| s_name | s_sex | s_age | count(s_sex) |
++--------+-------+-------+--------------+
+| 小哈   | 0     |    25 |            1 |
+| 四野   | 1     |    22 |            1 |
+| 小明   | 1     |    22 |            1 |
+| 黑黝黝 | 1     |    23 |            1 |
+| 小冰   | 2     |    19 |            1 |
+| 小雪   | 2     |    20 |            1 |
++--------+-------+-------+--------------+
+6 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_sex) from students group by s_sex,s_name,s_age having s_age>18;
++--------+-------+-------+--------------+
+| s_name | s_sex | s_age | count(s_sex) |
++--------+-------+-------+--------------+
+| 小哈   | 0     |    25 |            1 |
+| 四野   | 1     |    22 |            1 |
+| 小明   | 1     |    22 |            1 |
+| 黑黝黝 | 1     |    23 |            1 |
+| 小冰   | 2     |    19 |            1 |
+| 小雪   | 2     |    20 |            1 |
++--------+-------+-------+--------------+
+6 rows in set
+
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age having s_age>18;
++--------+-------+-------+
+| s_name | s_sex | s_age |
++--------+-------+-------+
+| 小哈   | 0     |    25 |
+| 四野   | 1     |    22 |
+| 小明   | 1     |    22 |
+| 黑黝黝 | 1     |    23 |
+| 小冰   | 2     |    19 |
+| 小雪   | 2     |    20 |
++--------+-------+-------+
+6 rows in set
+
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age where s_age>18;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where s_age>18' at line 1
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age having s_age>18 order by s_age asc;
++--------+-------+-------+
+| s_name | s_sex | s_age |
++--------+-------+-------+
+| 小冰   | 2     |    19 |
+| 小雪   | 2     |    20 |
+| 小明   | 1     |    22 |
+| 四野   | 1     |    22 |
+| 黑黝黝 | 1     |    23 |
+| 小哈   | 0     |    25 |
++--------+-------+-------+
+6 rows in set
+
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age order by s_age having s_age>18;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having s_age>18' at line 1
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age order by s_age asc having s_age>18;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having s_age>18' at line 1
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age having s_age>18 order by s_age desc;
++--------+-------+-------+
+| s_name | s_sex | s_age |
++--------+-------+-------+
+| 小哈   | 0     |    25 |
+| 黑黝黝 | 1     |    23 |
+| 小明   | 1     |    22 |
+| 四野   | 1     |    22 |
+| 小雪   | 2     |    20 |
+| 小冰   | 2     |    19 |
++--------+-------+-------+
+6 rows in set
+
+mysql> select s_name,s_sex,s_age from students group by s_sex,s_name,s_age having s_age>18 order by s_age desc;

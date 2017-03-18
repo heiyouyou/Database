@@ -1,0 +1,56 @@
+mysql> select s_name,s_sex,s_age sum(s_age) where s_height<>null group by s_name,s_sex,s_age having s_age>20 order by s_age;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sum(s_age) where s_height<>null group by s_name,s_sex,s_age having s_age>20 orde' at line 1
+mysql> select s_name,s_sex,s_age sum(s_age) from students where s_height<>null group by s_name,s_sex,s_age having s_age>20 order by s_age;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sum(s_age) from students where s_height<>null group by s_name,s_sex,s_age having' at line 1
+mysql> select s_name,s_sex,s_age sum(s_age) from students where s_height!=null group by s_name,s_sex,s_age having s_age>20 order by s_age;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sum(s_age) from students where s_height!=null group by s_name,s_sex,s_age having' at line 1
+mysql> select s_name,s_sex,s_age sum(s_age) from students group by s_name,s_sex,s_age having s_age>20 order by s_age;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sum(s_age) from students group by s_name,s_sex,s_age having s_age>20 order by s_' at line 1
+mysql> select s_name,s_sex,s_age,sum(s_age) from students group by s_name,s_sex,s_age having s_age>20 order by s_age;
++--------+-------+-------+------------+
+| s_name | s_sex | s_age | sum(s_age) |
++--------+-------+-------+------------+
+| 四野   | 1     |    22 | 22         |
+| 小明   | 1     |    22 | 22         |
+| 黑黝黝 | 1     |    23 | 23         |
+| 小哈   | 0     |    25 | 25         |
++--------+-------+-------+------------+
+4 rows in set
+
+mysql> select s_name,s_sex,s_age,sum(s_age) from students where s_height<>null group by s_name,s_sex,s_age having s_age>17 order by s_age;
+Empty set
+
+mysql> select s_name,s_sex,s_age,sum(s_age) from students where s_height!=null group by s_name,s_sex,s_age having s_age>17 order by s_age;
+Empty set
+
+mysql> select s_name,s_sex,s_age,sum(s_age) from students where s_height=185 group by s_name,s_sex,s_age having s_age>17 order by s_age;
++------------+-------+-------+------------+
+| s_name     | s_sex | s_age | sum(s_age) |
++------------+-------+-------+------------+
+| 雪之下雪乃 | 2     |    18 | 18         |
+| 小冰       | 2     |    19 | 19         |
+| 小雪       | 2     |    20 | 20         |
+| 四野       | 1     |    22 | 22         |
+| 小明       | 1     |    22 | 22         |
+| 黑黝黝     | 1     |    23 | 23         |
+| 小哈       | 0     |    25 | 25         |
++------------+-------+-------+------------+
+7 rows in set
+
+mysql> select s_name,s_sex,s_age,sum(s_age) from students group by s_name,s_sex,s_age having s_age>17 order by s_age;
++------------+-------+-------+------------+
+| s_name     | s_sex | s_age | sum(s_age) |
++------------+-------+-------+------------+
+| 雪之下雪乃 | 2     |    18 | 18         |
+| 小方       | 1     |    18 | 18         |
+| 小方       | 2     |    18 | 18         |
+| 小冰       | 2     |    19 | 19         |
+| 小雪       | 2     |    20 | 20         |
+| 四野       | 1     |    22 | 22         |
+| 小明       | 1     |    22 | 22         |
+| 黑黝黝     | 1     |    23 | 23         |
+| 小哈       | 0     |    25 | 25         |
++------------+-------+-------+------------+
+9 rows in set
+
+mysql> 

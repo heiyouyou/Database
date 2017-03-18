@@ -1,0 +1,295 @@
+mysql> select * from students where s_sex='2' and s_age > 18;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    9 | 小雪   |    20 | 2     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> select * from students where s_sex='2' and s_age > 18 and s_age < 20;
+Empty set
+
+mysql> select * from students where s_sex='2' and s_age > 18 and s_age < 22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    9 | 小雪   |    20 | 2     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> select * from students where s_sex='1' and s_age > 18 and s_age < 22;
+Empty set
+
+mysql> select * from students where s_age > 18 and s_age < 22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    9 | 小雪   |    20 | 2     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> select * from students where s_age > 18 and s_age < 23;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    7 | 四野   |    22 | 1     |
+|    9 | 小雪   |    20 | 2     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_sex = 0 or s_age>22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    8 | 黑黝黝 |    23 | 1     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_sex = 0 or s_age > 22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    8 | 黑黝黝 |    23 | 1     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_sex = 2 or s_age > 22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+3 rows in set
+
+mysql> select * from students where age not between 19 and 22;
+1054 - Unknown column 'age' in 'where clause'
+mysql> select * from students where s_age not between 19 and 22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+3 rows in set
+
+mysql> select * from students where s_age<19 or s_age>22;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+3 rows in set
+
+mysql> select * from students where s_sex not in(0);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+5 rows in set
+
+mysql> select * from students where s_sex not in(1);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_age not in(19,22,23);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+3 rows in set
+
+mysql> select * from students where s_age not in(19);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+5 rows in set
+
+mysql> select * from students where s_age not in(null);
+Empty set
+
+mysql> select * from students where s_age not in('null');
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+5 rows in set
+
+mysql> update students set s_age=22 where s_name='小明';
+Query OK, 1 row affected
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name not like '小_';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_name not like '%小_';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_name not like '%小';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name not like '小';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name not like '小_';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_name not like '_小';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name not like '%小';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name not like '_黝_';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+5 rows in set
+
+mysql> select * from students where s_name not like '_黝';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name not like '黝';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> 

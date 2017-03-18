@@ -1,0 +1,188 @@
+mysql> select * from students limit 0,2;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|    1 | 小方   |    18 | 1     | NULL     |
+|    7 | 四野   |    22 | 1     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     | NULL     |
+|    7 | 四野       |    22 | 1     | NULL     |
+|    8 | 黑黝黝     |    23 | 1     | NULL     |
+|    9 | 小雪       |    20 | 2     | NULL     |
+|   10 | 小哈       |    25 | 0     | NULL     |
+|   11 | 小明       |    22 | 1     | NULL     |
+|   12 | 雪之下雪乃 |    18 | 2     | NULL     |
+|   13 | 小冰       |    19 | 2     | NULL     |
++------+------------+-------+-------+----------+
+8 rows in set
+
+mysql> select * from students order by s_age desc limit 0,2;
+ 
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   10 | 小哈   |    25 | 0     | NULL     |
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit(1,2);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(1,2)' at line 1
+mysql> select * from students order by s_age desc limit(2,2);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(2,2)' at line 1
+mysql> select * from students order by s_age desc limit 1,2;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
+|    7 | 四野   |    22 | 1     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|   10 | 小哈       |    25 | 0     | NULL     |
+|    8 | 黑黝黝     |    23 | 1     | NULL     |
+|    7 | 四野       |    22 | 1     | NULL     |
+|   11 | 小明       |    22 | 1     | NULL     |
+|    9 | 小雪       |    20 | 2     | NULL     |
+|   13 | 小冰       |    19 | 2     | NULL     |
+|    1 | 小方       |    18 | 1     | NULL     |
+|   12 | 雪之下雪乃 |    18 | 2     | NULL     |
++------+------------+-------+-------+----------+
+8 rows in set
+
+mysql> select * from students order by s_age sex limit 0,2;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sex limit 0,2' at line 1
+mysql> select * from students order by s_age desc limit 0,2;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   10 | 小哈   |    25 | 0     | NULL     |
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 0,3;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   10 | 小哈   |    25 | 0     | NULL     |
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
+|    7 | 四野   |    22 | 1     | NULL     |
++------+--------+-------+-------+----------+
+3 rows in set
+
+mysql> select * from students order by s_age desc limit 3,3;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   11 | 小明   |    22 | 1     | NULL     |
+|    9 | 小雪   |    20 | 2     | NULL     |
+|   13 | 小冰   |    19 | 2     | NULL     |
++------+--------+-------+-------+----------+
+3 rows in set
+
+mysql> select * from students order by s_age desc limit 6,3;
+ 
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     | NULL     |
+|   12 | 雪之下雪乃 |    18 | 2     | NULL     |
++------+------------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 9,3; 
+Empty set
+
+mysql> select * from students order by s_age desc limit 0,3;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   10 | 小哈   |    25 | 0     | NULL     |
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
+|    7 | 四野   |    22 | 1     | NULL     |
++------+--------+-------+-------+----------+
+3 rows in set
+
+mysql> select * from students order by s_age desc limit 3,3;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   11 | 小明   |    22 | 1     | NULL     |
+|    9 | 小雪   |    20 | 2     | NULL     |
+|   13 | 小冰   |    19 | 2     | NULL     |
++------+--------+-------+-------+----------+
+3 rows in set
+
+mysql> select * from students order by s_age desc limit 6,3;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     | NULL     |
+|   12 | 雪之下雪乃 |    18 | 2     | NULL     |
++------+------------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 9,3;
+Empty set
+
+mysql> select * from students order by s_age desc limit 0,3;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   10 | 小哈   |    25 | 0     | NULL     |
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
+|    7 | 四野   |    22 | 1     | NULL     |
++------+--------+-------+-------+----------+
+3 rows in set
+
+mysql> select * from students order by s_age desc limit 0,2;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|   10 | 小哈   |    25 | 0     | NULL     |
+|    8 | 黑黝黝 |    23 | 1     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 2,2;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|    7 | 四野   |    22 | 1     | NULL     |
+|   11 | 小明   |    22 | 1     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 4,2;
++------+--------+-------+-------+----------+
+| s_no | s_name | s_age | s_sex | s_height |
++------+--------+-------+-------+----------+
+|    9 | 小雪   |    20 | 2     | NULL     |
+|   13 | 小冰   |    19 | 2     | NULL     |
++------+--------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 6,2;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     | NULL     |
+|   12 | 雪之下雪乃 |    18 | 2     | NULL     |
++------+------------+-------+-------+----------+
+2 rows in set
+
+mysql> select * from students order by s_age desc limit 8,2;
+Empty set
+
+mysql> 

@@ -1,0 +1,157 @@
+mysql> select * from students s where exists(select 1 from students where s.sex='2');
+1054 - Unknown column 's.sex' in 'where clause'
+mysql> select * from students s where exists(select 1 from students where s.s_sex='2');
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    9 | 小雪   |    20 | 2     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> select * from students;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> insert into students(s_name,s_age,s_sex) values('雪之下雪乃',18,2);
+Query OK, 1 row affected
+
+mysql> insert into students(s_name,s_age,s_sex) values('小冰',19,2);
+Query OK, 1 row affected
+
+mysql> select * from students s where exists(select * from students where s.sex=2);
+1054 - Unknown column 's.sex' in 'where clause'
+mysql> select * from students s where exists(select * from students where s_sex=2);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students s where exists(select * from students where s.s_sex=2);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    9 | 小雪       |    20 | 2     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+3 rows in set
+
+mysql> select * from students where s_sex=2
+    -> select * from students where s_sex=2;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from students where s_sex=2' at line 3
+mysql> select * from students where s_sex=2;
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    9 | 小雪       |    20 | 2     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+3 rows in set
+
+mysql> select * from students s where exists(select * from students s where s.s_sex=2);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students s where exists(select * from students t where s.s_sex=2);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    9 | 小雪       |    20 | 2     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+3 rows in set
+
+mysql> select * from students s where exists(select * from students t where t.s_sex=2);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students s where exists(select * from students t where s.s_sex=2);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    9 | 小雪       |    20 | 2     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+3 rows in set
+
+mysql> select * from students s where not exists(select * from students t where s.s_sex=2);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   |    22 | 1     |
++------+--------+-------+-------+
+5 rows in set
+
+mysql> select * from students s where not exists(select * from students t where s.s_sex=1);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+4 rows in set
+
+mysql> select * from students s where not exists(select * from students t where s.s_sex=0);
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+7 rows in set
+
+mysql> 

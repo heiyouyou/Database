@@ -1,0 +1,363 @@
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+9 rows in set
+
+mysql> select s_name,s_no,s_age,s_sex min(s_sex) from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(s_sex) from students' at line 1
+mysql> select s_name,s_no,s_age,s_sex min(s_age) from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(s_age) from students' at line 1
+mysql> select s_name,s_no,s_age,s_sex min(s_age) from students group by s_age;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(s_age) from students group by s_age' at line 1
+mysql> select s_name,s_no,s_age,s_sex min(s_age) from students group by s_age,s_name,s_no,s_sex;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(s_age) from students group by s_age,s_name,s_no,s_sex' at line 1
+mysql> select s_name,s_no,s_age,s_sex min(s_age) from students where s_no<>0;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'min(s_age) from students where s_no<>0' at line 1
+mysql> select s_name,s_no,s_age,s_sex from students where s_no<>0;
++------------+------+-------+-------+
+| s_name     | s_no | s_age | s_sex |
++------------+------+-------+-------+
+| 小方       |    1 |    18 | 1     |
+| 四野       |    7 |    22 | 1     |
+| 黑黝黝     |    8 |    23 | 1     |
+| 小雪       |    9 |    20 | 2     |
+| 小哈       |   10 |    25 | 0     |
+| 小明       |   11 |    22 | 1     |
+| 雪之下雪乃 |   12 |    18 | 2     |
+| 小冰       |   13 |    19 | 2     |
+| 小方       |   14 |    18 | 2     |
++------------+------+-------+-------+
+9 rows in set
+
+mysql> select s_name,s_no,s_age,s_sex,avg(s_age) from students where s_no<>0;
++--------+------+-------+-------+------------+
+| s_name | s_no | s_age | s_sex | avg(s_age) |
++--------+------+-------+-------+------------+
+| 小方   |    1 |    18 | 1     | 20.5556    |
++--------+------+-------+-------+------------+
+1 row in set
+
+mysql> select s_age,avg(s_age) from students;
++-------+------------+
+| s_age | avg(s_age) |
++-------+------------+
+|    18 | 20.5556    |
++-------+------------+
+1 row in set
+
+mysql> select s_name,s_age,s_sex,min(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+------------+
+| s_name     | s_age | s_sex | min(s_age) |
++------------+-------+-------+------------+
+| 四野       |    22 | 1     |         22 |
+| 小冰       |    19 | 2     |         19 |
+| 小哈       |    25 | 0     |         25 |
+| 小方       |    18 | 1     |         18 |
+| 小方       |    18 | 2     |         18 |
+| 小明       |    22 | 1     |         22 |
+| 小雪       |    20 | 2     |         20 |
+| 雪之下雪乃 |    18 | 2     |         18 |
+| 黑黝黝     |    23 | 1     |         23 |
++------------+-------+-------+------------+
+9 rows in set
+
+mysql> select * ,count(s_name) from students;
++------+--------+-------+-------+----------+---------------+
+| s_no | s_name | s_age | s_sex | s_height | count(s_name) |
++------+--------+-------+-------+----------+---------------+
+|    1 | 小方   |    18 | 1     |      175 |             9 |
++------+--------+-------+-------+----------+---------------+
+1 row in set
+
+mysql> select * ,count(s_name) from students group by s_name,s_no,s_height,s_age,s_sex;
++------+------------+-------+-------+----------+---------------+
+| s_no | s_name     | s_age | s_sex | s_height | count(s_name) |
++------+------------+-------+-------+----------+---------------+
+|    7 | 四野       |    22 | 1     |      185 |             1 |
+|   13 | 小冰       |    19 | 2     |      185 |             1 |
+|   10 | 小哈       |    25 | 0     |      185 |             1 |
+|    1 | 小方       |    18 | 1     |      175 |             1 |
+|   14 | 小方       |    18 | 2     |      168 |             1 |
+|   11 | 小明       |    22 | 1     |      185 |             1 |
+|    9 | 小雪       |    20 | 2     |      185 |             1 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |             1 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |             1 |
++------+------------+-------+-------+----------+---------------+
+9 rows in set
+
+mysql> select min(s_age) from students;
++------------+
+| min(s_age) |
++------------+
+|         18 |
++------------+
+1 row in set
+
+mysql> select max(s_age) from students;
++------------+
+| max(s_age) |
++------------+
+|         25 |
++------------+
+1 row in set
+
+mysql> select avg(s_age) from students;
++------------+
+| avg(s_age) |
++------------+
+| 20.5556    |
++------------+
+1 row in set
+
+mysql> select avg(s_age ) from students;
++-------------+
+| avg(s_age ) |
++-------------+
+| 20.5556     |
++-------------+
+1 row in set
+
+mysql> select avg(s_name) from students;
++-------------+
+| avg(s_name) |
++-------------+
+|           0 |
++-------------+
+1 row in set
+
+mysql> select avg(s_height) from students;
++---------------+
+| avg(s_height) |
++---------------+
+| 182.0000      |
++---------------+
+1 row in set
+
+mysql> select s_name,s_sex,s_age,avg(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+------------+
+| s_name     | s_sex | s_age | avg(s_age) |
++------------+-------+-------+------------+
+| 四野       | 1     |    22 | 22.0000    |
+| 小冰       | 2     |    19 | 19.0000    |
+| 小哈       | 0     |    25 | 25.0000    |
+| 小方       | 1     |    18 | 18.0000    |
+| 小方       | 2     |    18 | 18.0000    |
+| 小明       | 1     |    22 | 22.0000    |
+| 小雪       | 2     |    20 | 20.0000    |
+| 雪之下雪乃 | 2     |    18 | 18.0000    |
+| 黑黝黝     | 1     |    23 | 23.0000    |
++------------+-------+-------+------------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,min(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+------------+
+| s_name     | s_sex | s_age | min(s_age) |
++------------+-------+-------+------------+
+| 四野       | 1     |    22 |         22 |
+| 小冰       | 2     |    19 |         19 |
+| 小哈       | 0     |    25 |         25 |
+| 小方       | 1     |    18 |         18 |
+| 小方       | 2     |    18 |         18 |
+| 小明       | 1     |    22 |         22 |
+| 小雪       | 2     |    20 |         20 |
+| 雪之下雪乃 | 2     |    18 |         18 |
+| 黑黝黝     | 1     |    23 |         23 |
++------------+-------+-------+------------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,max(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+------------+
+| s_name     | s_sex | s_age | max(s_age) |
++------------+-------+-------+------------+
+| 四野       | 1     |    22 |         22 |
+| 小冰       | 2     |    19 |         19 |
+| 小哈       | 0     |    25 |         25 |
+| 小方       | 1     |    18 |         18 |
+| 小方       | 2     |    18 |         18 |
+| 小明       | 1     |    22 |         22 |
+| 小雪       | 2     |    20 |         20 |
+| 雪之下雪乃 | 2     |    18 |         18 |
+| 黑黝黝     | 1     |    23 |         23 |
++------------+-------+-------+------------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,count(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+--------------+
+| s_name     | s_sex | s_age | count(s_age) |
++------------+-------+-------+--------------+
+| 四野       | 1     |    22 |            1 |
+| 小冰       | 2     |    19 |            1 |
+| 小哈       | 0     |    25 |            1 |
+| 小方       | 1     |    18 |            1 |
+| 小方       | 2     |    18 |            1 |
+| 小明       | 1     |    22 |            1 |
+| 小雪       | 2     |    20 |            1 |
+| 雪之下雪乃 | 2     |    18 |            1 |
+| 黑黝黝     | 1     |    23 |            1 |
++------------+-------+-------+--------------+
+9 rows in set
+
+mysql> select s_name,s_sex,s_age,sum(s_age) from students group by s_name,s_sex,s_age;
++------------+-------+-------+------------+
+| s_name     | s_sex | s_age | sum(s_age) |
++------------+-------+-------+------------+
+| 四野       | 1     |    22 | 22         |
+| 小冰       | 2     |    19 | 19         |
+| 小哈       | 0     |    25 | 25         |
+| 小方       | 1     |    18 | 18         |
+| 小方       | 2     |    18 | 18         |
+| 小明       | 1     |    22 | 22         |
+| 小雪       | 2     |    20 | 20         |
+| 雪之下雪乃 | 2     |    18 | 18         |
+| 黑黝黝     | 1     |    23 | 23         |
++------------+-------+-------+------------+
+9 rows in set
+
+mysql> select s_name,sum(s_age) from students group by s_name;
++------------+------------+
+| s_name     | sum(s_age) |
++------------+------------+
+| 四野       | 22         |
+| 小冰       | 19         |
+| 小哈       | 25         |
+| 小方       | 36         |
+| 小明       | 22         |
+| 小雪       | 20         |
+| 雪之下雪乃 | 18         |
+| 黑黝黝     | 23         |
++------------+------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_age) from students group by s_name;
++------------+------------+--------------+
+| s_name     | sum(s_age) | count(s_age) |
++------------+------------+--------------+
+| 四野       | 22         |            1 |
+| 小冰       | 19         |            1 |
+| 小哈       | 25         |            1 |
+| 小方       | 36         |            2 |
+| 小明       | 22         |            1 |
+| 小雪       | 20         |            1 |
+| 雪之下雪乃 | 18         |            1 |
+| 黑黝黝     | 23         |            1 |
++------------+------------+--------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_name) from students group by s_name;
++------------+------------+---------------+
+| s_name     | sum(s_age) | count(s_name) |
++------------+------------+---------------+
+| 四野       | 22         |             1 |
+| 小冰       | 19         |             1 |
+| 小哈       | 25         |             1 |
+| 小方       | 36         |             2 |
+| 小明       | 22         |             1 |
+| 小雪       | 20         |             1 |
+| 雪之下雪乃 | 18         |             1 |
+| 黑黝黝     | 23         |             1 |
++------------+------------+---------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_sex) from students group by s_name;
++------------+------------+--------------+
+| s_name     | sum(s_age) | count(s_sex) |
++------------+------------+--------------+
+| 四野       | 22         |            1 |
+| 小冰       | 19         |            1 |
+| 小哈       | 25         |            1 |
+| 小方       | 36         |            2 |
+| 小明       | 22         |            1 |
+| 小雪       | 20         |            1 |
+| 雪之下雪乃 | 18         |            1 |
+| 黑黝黝     | 23         |            1 |
++------------+------------+--------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_age) from students group by s_name;
++------------+------------+--------------+
+| s_name     | sum(s_age) | count(s_age) |
++------------+------------+--------------+
+| 四野       | 22         |            1 |
+| 小冰       | 19         |            1 |
+| 小哈       | 25         |            1 |
+| 小方       | 36         |            2 |
+| 小明       | 22         |            1 |
+| 小雪       | 20         |            1 |
+| 雪之下雪乃 | 18         |            1 |
+| 黑黝黝     | 23         |            1 |
++------------+------------+--------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_age),avg(s_age) from students group by s_name;
++------------+------------+--------------+------------+
+| s_name     | sum(s_age) | count(s_age) | avg(s_age) |
++------------+------------+--------------+------------+
+| 四野       | 22         |            1 | 22.0000    |
+| 小冰       | 19         |            1 | 19.0000    |
+| 小哈       | 25         |            1 | 25.0000    |
+| 小方       | 36         |            2 | 18.0000    |
+| 小明       | 22         |            1 | 22.0000    |
+| 小雪       | 20         |            1 | 20.0000    |
+| 雪之下雪乃 | 18         |            1 | 18.0000    |
+| 黑黝黝     | 23         |            1 | 23.0000    |
++------------+------------+--------------+------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_age),avg(s_age),min(s_age) from students group by s_name;
++------------+------------+--------------+------------+------------+
+| s_name     | sum(s_age) | count(s_age) | avg(s_age) | min(s_age) |
++------------+------------+--------------+------------+------------+
+| 四野       | 22         |            1 | 22.0000    |         22 |
+| 小冰       | 19         |            1 | 19.0000    |         19 |
+| 小哈       | 25         |            1 | 25.0000    |         25 |
+| 小方       | 36         |            2 | 18.0000    |         18 |
+| 小明       | 22         |            1 | 22.0000    |         22 |
+| 小雪       | 20         |            1 | 20.0000    |         20 |
+| 雪之下雪乃 | 18         |            1 | 18.0000    |         18 |
+| 黑黝黝     | 23         |            1 | 23.0000    |         23 |
++------------+------------+--------------+------------+------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_age),avg(s_age),min(s_age),max(s_age) from students group by s_name;
++------------+------------+--------------+------------+------------+------------+
+| s_name     | sum(s_age) | count(s_age) | avg(s_age) | min(s_age) | max(s_age) |
++------------+------------+--------------+------------+------------+------------+
+| 四野       | 22         |            1 | 22.0000    |         22 |         22 |
+| 小冰       | 19         |            1 | 19.0000    |         19 |         19 |
+| 小哈       | 25         |            1 | 25.0000    |         25 |         25 |
+| 小方       | 36         |            2 | 18.0000    |         18 |         18 |
+| 小明       | 22         |            1 | 22.0000    |         22 |         22 |
+| 小雪       | 20         |            1 | 20.0000    |         20 |         20 |
+| 雪之下雪乃 | 18         |            1 | 18.0000    |         18 |         18 |
+| 黑黝黝     | 23         |            1 | 23.0000    |         23 |         23 |
++------------+------------+--------------+------------+------------+------------+
+8 rows in set
+
+mysql> select s_name,sum(s_age),count(s_age),avg(s_age),min(s_age),max(s_age) from students;
++--------+------------+--------------+------------+------------+------------+
+| s_name | sum(s_age) | count(s_age) | avg(s_age) | min(s_age) | max(s_age) |
++--------+------------+--------------+------------+------------+------------+
+| 小方   | 185        |            9 | 20.5556    |         18 |         25 |
++--------+------------+--------------+------------+------------+------------+
+1 row in set
+
+mysql> select sum(s_age),count(s_age),avg(s_age),min(s_age),max(s_age) from students;
++------------+--------------+------------+------------+------------+
+| sum(s_age) | count(s_age) | avg(s_age) | min(s_age) | max(s_age) |
++------------+--------------+------------+------------+------------+
+| 185        |            9 | 20.5556    |         18 |         25 |
++------------+--------------+------------+------------+------------+
+1 row in set
+
+mysql> 

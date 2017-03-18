@@ -1,0 +1,96 @@
+mysql> select * from students inner join class on students.class_id = class.id;
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班    |  3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+3 rows in set
+
+mysql> select * from class inner join students on students.class_id = class.id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> select * from class,students where students.class_id = class.id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> insert into students(s_name,sex,s_on,age,nickName) values('丫丫','2','004',22,'小雅')；
+    -> insert into students(s_name,sex,s_on,age,nickName) values('丫丫','2','004',22,'小雅');
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '；
+
+insert into students(s_name,sex,s_on,age,nickName) values('丫丫','2','' at line 1
+mysql> insert into students(s_name,sex,s_on,age,nickName) values('丫丫','2','004',22,'小雅');
+1054 - Unknown column 's_on' in 'field list'
+mysql> insert into students(s_name,sex,s_on,age,nickName) values('丫丫','2','004',22,'小雅');
+1054 - Unknown column 's_on' in 'field list'
+mysql> insert into students(s_name,sex,s_on,age,nickName) values('丫丫','2','004',22,'小雅');
+1054 - Unknown column 's_on' in 'field list'
+mysql> insert into students(s_name,sex,s_no,age,nickName) values('丫丫','2','004',22,'小雅');
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 丫丫   | 2   | 004  |  22 | 不详     | 小雅     | NULL     |
++--------+-----+------+-----+----------+----------+----------+
+4 rows in set
+
+mysql> select * from students s,class c where s.class_id = c.id;
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班    |  3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+3 rows in set
+
+mysql> select * from students s inner join class c on s.class_id = c.id;
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班    |  3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+3 rows in set
+
+mysql> select * from class c inner join students s on s.class_id = c.id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> select * from class c inner join students s on c.id = s.class_id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> 

@@ -1,0 +1,192 @@
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| ºÚ÷î÷î | ÄÐ  | 001  |  22 | 175      | ÓÐÓÐ     |        3 |
+| Ð¡Ñ©ÄË | Å®  | 002  |  20 | 165      | Ñ©ÄË½´   |        2 |
+| ¿ñÈý   | Å®  | 003  |  18 | 165      | ÈËÆøÈý   |        2 |
+| Ñ¾Ñ¾   | 2   | 004  |  22 | ²»Ïê     | Ð¡ÑÅ     | NULL     |
++--------+-----+------+-----+----------+----------+----------+
+4 rows in set
+
+mysql> select * from class;
++-----------+----+
+| className | id |
++-----------+----+
+| ÖÐ¼¶°à    |  1 |
+| »ù´¡°à    |  3 |
+| ÌØÑµ°à    |  5 |
+| ÖÕ¼«°à    |  4 |
+| ¸ß¼¶°à    |  2 |
++-----------+----+
+5 rows in set
+
+mysql> select s_name,class_id from students union select * from class;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| ºÚ÷î÷î |        3 |
+| Ð¡Ñ©ÄË |        2 |
+| ¿ñÈý   |        2 |
+| Ñ¾Ñ¾   | NULL     |
+| ÖÐ¼¶°à |        1 |
+| »ù´¡°à |        3 |
+| ÌØÑµ°à |        5 |
+| ÖÕ¼«°à |        4 |
+| ¸ß¼¶°à |        2 |
++--------+----------+
+9 rows in set
+
+mysql> select s_name,class_id from students union select * from students;
+1222 - The used SELECT statements have a different number of columns
+mysql> select s_name,class_id from students union select s_name,nickName from students;
++--------+-----------+
+| s_name | class_id  |
++--------+-----------+
+| ºÚ÷î÷î | 3         |
+| Ð¡Ñ©ÄË | 2         |
+| ¿ñÈý   | 2         |
+| Ñ¾Ñ¾   | NULL      |
+| ºÚ÷î÷î | æœ‰æœ‰    |
+| Ð¡Ñ©ÄË | é›ªä¹ƒé…? |
+| ¿ñÈý   | äººæ°”ä¸? |
+| Ñ¾Ñ¾   | å°é›…    |
++--------+-----------+
+8 rows in set
+
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | ²»Ïê    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | ²»Ïê    |       |
+| nickName | varchar(20) | YES  |     | ²»Ïê    |       |
+| class_id | int(10)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> select s_name,class_id from students union select className,id from class;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| ºÚ÷î÷î |        3 |
+| Ð¡Ñ©ÄË |        2 |
+| ¿ñÈý   |        2 |
+| Ñ¾Ñ¾   | NULL     |
+| ÖÐ¼¶°à |        1 |
+| »ù´¡°à |        3 |
+| ÌØÑµ°à |        5 |
+| ÖÕ¼«°à |        4 |
+| ¸ß¼¶°à |        2 |
++--------+----------+
+9 rows in set
+
+mysql> select s_name,nickName from students union select className,id from class;
++--------+-----------+
+| s_name | nickName  |
++--------+-----------+
+| ºÚ÷î÷î | æœ‰æœ‰    |
+| Ð¡Ñ©ÄË | é›ªä¹ƒé…? |
+| ¿ñÈý   | äººæ°”ä¸? |
+| Ñ¾Ñ¾   | å°é›…    |
+| ÖÐ¼¶°à | 1         |
+| »ù´¡°à | 3         |
+| ÌØÑµ°à | 5         |
+| ÖÕ¼«°à | 4         |
+| ¸ß¼¶°à | 2         |
++--------+-----------+
+9 rows in set
+
+mysql> select nickName,s_name from students union select className,id from class;
++----------+-----------+
+| nickName | s_name    |
++----------+-----------+
+| ÓÐÓÐ     | é»‘é»é»? |
+| Ñ©ÄË½´   | å°é›ªä¹? |
+| ÈËÆøÈý   | ç‹‚ä¸‰    |
+| Ð¡ÑÅ     | ä¸«ä¸«    |
+| ÖÐ¼¶°à   | 1         |
+| »ù´¡°à   | 3         |
+| ÌØÑµ°à   | 5         |
+| ÖÕ¼«°à   | 4         |
+| ¸ß¼¶°à   | 2         |
++----------+-----------+
+9 rows in set
+
+mysql> select nickName,class_id from students union select className,id from class;
++----------+----------+
+| nickName | class_id |
++----------+----------+
+| ÓÐÓÐ     |        3 |
+| Ñ©ÄË½´   |        2 |
+| ÈËÆøÈý   |        2 |
+| Ð¡ÑÅ     | NULL     |
+| ÖÐ¼¶°à   |        1 |
+| »ù´¡°à   |        3 |
+| ÌØÑµ°à   |        5 |
+| ÖÕ¼«°à   |        4 |
+| ¸ß¼¶°à   |        2 |
++----------+----------+
+9 rows in set
+
+mysql> select nickName,class_id from students union select s_name,class_id from students;
++----------+----------+
+| nickName | class_id |
++----------+----------+
+| ÓÐÓÐ     |        3 |
+| Ñ©ÄË½´   |        2 |
+| ÈËÆøÈý   |        2 |
+| Ð¡ÑÅ     | NULL     |
+| ºÚ÷î÷î   |        3 |
+| Ð¡Ñ©ÄË   |        2 |
+| ¿ñÈý     |        2 |
+| Ñ¾Ñ¾     | NULL     |
++----------+----------+
+8 rows in set
+
+mysql> select s_name,class_id from students union select s_name,class_id from students;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| ºÚ÷î÷î |        3 |
+| Ð¡Ñ©ÄË |        2 |
+| ¿ñÈý   |        2 |
+| Ñ¾Ñ¾   | NULL     |
++--------+----------+
+4 rows in set
+
+mysql> select s_name,class_id from students union select s_name,class_id from students union select * from class;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| ºÚ÷î÷î |        3 |
+| Ð¡Ñ©ÄË |        2 |
+| ¿ñÈý   |        2 |
+| Ñ¾Ñ¾   | NULL     |
+| ÖÐ¼¶°à |        1 |
+| »ù´¡°à |        3 |
+| ÌØÑµ°à |        5 |
+| ÖÕ¼«°à |        4 |
+| ¸ß¼¶°à |        2 |
++--------+----------+
+9 rows in set
+
+mysql> select s_name,class_id from students union all select s_name,class_id from students;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| ºÚ÷î÷î |        3 |
+| Ð¡Ñ©ÄË |        2 |
+| ¿ñÈý   |        2 |
+| Ñ¾Ñ¾   | NULL     |
+| ºÚ÷î÷î |        3 |
+| Ð¡Ñ©ÄË |        2 |
+| ¿ñÈý   |        2 |
+| Ñ¾Ñ¾   | NULL     |
++--------+----------+
+8 rows in set
+
+mysql> 

@@ -1,0 +1,128 @@
+mysql> select * from students where sex in (1,0);
+1054 - Unknown column 'sex' in 'where clause'
+mysql> select * from students where s_sex in (1,0);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+5 rows in set
+
+mysql> select * from students where s_sex in (1);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+4 rows in set
+
+mysql> select * from students where s_sex in (2,0);
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
++------+--------+-------+-------+
+2 rows in set
+
+mysql> select * from students where s_age in (19,21,24);
+Empty set
+
+mysql> select * from students where s_name like '小';
+Empty set
+
+mysql> select * from students where s_name like '%小';
+Empty set
+
+mysql> select * from students where s_name like '小'%;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%' at line 1
+mysql> select * from students where s_name like '小%';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+4 rows in set
+
+mysql> select * from students where s_name like '小_';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+4 rows in set
+
+mysql> select * from students where s_name like '%小';
+Empty set
+
+mysql> select * from students where s_name like '%小%';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+4 rows in set
+
+mysql> select * from students;
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    1 | 小方   |    18 | 1     |
+|    7 | 四野   |    22 | 1     |
+|    8 | 黑黝黝 |    23 | 1     |
+|    9 | 小雪   |    20 | 2     |
+|   10 | 小哈   |    25 | 0     |
+|   11 | 小明   | NULL  | 1     |
++------+--------+-------+-------+
+6 rows in set
+
+mysql> select * from students where s_name like '%野';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    7 | 四野   |    22 | 1     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> select * from students where s_name like '_野';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    7 | 四野   |    22 | 1     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> select * from students where s_name like '__野';
+Empty set
+
+mysql> select * from students where s_name like '野_';
+Empty set
+
+mysql> select * from students where s_name like '黑_';
+Empty set
+
+mysql> select * from students where s_name like '黑__';
++------+--------+-------+-------+
+| s_no | s_name | s_age | s_sex |
++------+--------+-------+-------+
+|    8 | 黑黝黝 |    23 | 1     |
++------+--------+-------+-------+
+1 row in set
+
+mysql> 

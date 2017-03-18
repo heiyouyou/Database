@@ -1,0 +1,709 @@
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+9 rows in set
+
+mysql> select s_name,case s_sex when 1 then '男' when 2 then '女' when 0 then '不详' from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from students' at line 1
+mysql> select s_name,case s_sex when 1 then '男' when 2 then '女' else '不详' end from students;
++------------+--------------------------------------------------------------+
+| s_name     | case s_sex when 1 then '男' when 2 then '女' else '不详' end |
++------------+--------------------------------------------------------------+
+| 小方       | 男                                                           |
+| 四野       | 男                                                           |
+| 黑黝黝     | 男                                                           |
+| 小雪       | 女                                                           |
+| 小哈       | 不详                                                         |
+| 小明       | 男                                                           |
+| 雪之下雪乃 | 女                                                           |
+| 小冰       | 女                                                           |
+| 小方       | 女                                                           |
++------------+--------------------------------------------------------------+
+9 rows in set
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+9 rows in set
+
+mysql> select s_name,if(s_age < 18,'未成年人','成年人') from students;
++------------+------------------------------------+
+| s_name     | if(s_age < 18,'未成年人','成年人') |
++------------+------------------------------------+
+| 小方       | 成年人                             |
+| 四野       | 成年人                             |
+| 黑黝黝     | 成年人                             |
+| 小雪       | 成年人                             |
+| 小哈       | 成年人                             |
+| 小明       | 成年人                             |
+| 雪之下雪乃 | 成年人                             |
+| 小冰       | 成年人                             |
+| 小方       | 成年人                             |
++------------+------------------------------------+
+9 rows in set
+
+mysql> select s_name,if(s_age < 19,'未成年人','成年人') from students;
++------------+------------------------------------+
+| s_name     | if(s_age < 19,'未成年人','成年人') |
++------------+------------------------------------+
+| 小方       | 未成年人                           |
+| 四野       | 成年人                             |
+| 黑黝黝     | 成年人                             |
+| 小雪       | 成年人                             |
+| 小哈       | 成年人                             |
+| 小明       | 成年人                             |
+| 雪之下雪乃 | 未成年人                           |
+| 小冰       | 成年人                             |
+| 小方       | 未成年人                           |
++------------+------------------------------------+
+9 rows in set
+
+mysql> select s_name,if(s_age < 19,'未成年人','成年人') as s_age from students;
++------------+----------+
+| s_name     | s_age    |
++------------+----------+
+| 小方       | 未成年人 |
+| 四野       | 成年人   |
+| 黑黝黝     | 成年人   |
+| 小雪       | 成年人   |
+| 小哈       | 成年人   |
+| 小明       | 成年人   |
+| 雪之下雪乃 | 未成年人 |
+| 小冰       | 成年人   |
+| 小方       | 未成年人 |
++------------+----------+
+9 rows in set
+
+mysql> select s_name,ifnull(s_no,0) s_no from students;
++------------+------+
+| s_name     | s_no |
++------------+------+
+| 小方       |    1 |
+| 四野       |    7 |
+| 黑黝黝     |    8 |
+| 小雪       |    9 |
+| 小哈       |   10 |
+| 小明       |   11 |
+| 雪之下雪乃 |   12 |
+| 小冰       |   13 |
+| 小方       |   14 |
++------------+------+
+9 rows in set
+
+mysql> desc students;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| s_no     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| s_name   | varchar(10) | NO   |     | NULL    |                |
+| s_age    | int(3)      | YES  |     | NULL    |                |
+| s_sex    | char(2)     | YES  |     | 0       |                |
+| s_height | int(5)      | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+5 rows in set
+
+mysql> insert into students(s_no,s_name,s_age,s_sex) values(2,'世界',18,'2');
+Query OK, 1 row affected
+
+mysql> select * from studentsl
+    -> select * from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from students' at line 3
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    2 | 世界       |    18 | 2     | NULL     |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+10 rows in set
+
+mysql> select * s_name ifnull(s_height,0) s_height from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's_name ifnull(s_height,0) s_height from students' at line 1
+mysql> select s_name,ifnull(s_height,0) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       |        0 |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select s_name,nullif(s_height,0) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       | NULL     |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select * from studnets;
+1146 - Table 'test.studnets' doesn't exist
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    2 | 世界       |    18 | 2     | NULL     |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+10 rows in set
+
+mysql> select s_name,ifnull(s_height,0) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       |        0 |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    2 | 世界       |    18 | 2     | NULL     |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
++------+------------+-------+-------+----------+
+10 rows in set
+
+mysql> select s_name,nullif(s_height,0) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       | NULL     |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select s_name,nullif(s_height,189) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       | NULL     |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select s_name,nullif(s_height,168) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       | NULL     |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       | NULL     |
++------------+----------+
+10 rows in set
+
+mysql> select s_name,nullif(s_height,185) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       | NULL     |
+| 四野       | NULL     |
+| 黑黝黝     | NULL     |
+| 小雪       | NULL     |
+| 小哈       | NULL     |
+| 小明       | NULL     |
+| 雪之下雪乃 | NULL     |
+| 小冰       | NULL     |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select s_name,ifnull(s_height,174) s_height from students;
++------------+----------+
+| s_name     | s_height |
++------------+----------+
+| 小方       |      175 |
+| 世界       |      174 |
+| 四野       |      185 |
+| 黑黝黝     |      185 |
+| 小雪       |      185 |
+| 小哈       |      185 |
+| 小明       |      185 |
+| 雪之下雪乃 |      185 |
+| 小冰       |      185 |
+| 小方       |      168 |
++------------+----------+
+10 rows in set
+
+mysql> select subtstring(s_name,0) s_name from students;
+1305 - FUNCTION test.subtstring does not exist
+mysql> select substring(s_name,0) s_name from students;
++--------+
+| s_name |
++--------+
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
++--------+
+10 rows in set
+
+mysql> select substring(s_name,1) s_name from students;
++------------+
+| s_name     |
++------------+
+| 小方       |
+| 世界       |
+| 四野       |
+| 黑黝黝     |
+| 小雪       |
+| 小哈       |
+| 小明       |
+| 雪之下雪乃 |
+| 小冰       |
+| 小方       |
++------------+
+10 rows in set
+
+mysql> select substring(s_name,2) s_name from students;
++----------+
+| s_name   |
++----------+
+| 方       |
+| 界       |
+| 野       |
+| 黝黝     |
+| 雪       |
+| 哈       |
+| 明       |
+| 之下雪乃 |
+| 冰       |
+| 方       |
++----------+
+10 rows in set
+
+mysql> select substring(s_name,2,2) s_name from students;
++--------+
+| s_name |
++--------+
+| 方     |
+| 界     |
+| 野     |
+| 黝黝   |
+| 雪     |
+| 哈     |
+| 明     |
+| 之下   |
+| 冰     |
+| 方     |
++--------+
+10 rows in set
+
+mysql> select left(s_name,1) from students;
++----------------+
+| left(s_name,1) |
++----------------+
+| 小             |
+| 世             |
+| 四             |
+| 黑             |
+| 小             |
+| 小             |
+| 小             |
+| 雪             |
+| 小             |
+| 小             |
++----------------+
+10 rows in set
+
+mysql> select left(s_name,2) from students;
++----------------+
+| left(s_name,2) |
++----------------+
+| 小方           |
+| 世界           |
+| 四野           |
+| 黑黝           |
+| 小雪           |
+| 小哈           |
+| 小明           |
+| 雪之           |
+| 小冰           |
+| 小方           |
++----------------+
+10 rows in set
+
+mysql> select left(s_name,0) s_name from students;
++--------+
+| s_name |
++--------+
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
+|        |
++--------+
+10 rows in set
+
+mysql> select left(s_name,2) s_left_name,right(s_name,2) s_right_name from students;
++-------------+--------------+
+| s_left_name | s_right_name |
++-------------+--------------+
+| 小方        | 小方         |
+| 世界        | 世界         |
+| 四野        | 四野         |
+| 黑黝        | 黝黝         |
+| 小雪        | 小雪         |
+| 小哈        | 小哈         |
+| 小明        | 小明         |
+| 雪之        | 雪乃         |
+| 小冰        | 小冰         |
+| 小方        | 小方         |
++-------------+--------------+
+10 rows in set
+
+mysql> select left(s_name,1) s_left_name,right(s_name,1) s_right_name from students;
++-------------+--------------+
+| s_left_name | s_right_name |
++-------------+--------------+
+| 小          | 方           |
+| 世          | 界           |
+| 四          | 野           |
+| 黑          | 黝           |
+| 小          | 雪           |
+| 小          | 哈           |
+| 小          | 明           |
+| 雪          | 乃           |
+| 小          | 冰           |
+| 小          | 方           |
++-------------+--------------+
+10 rows in set
+
+mysql> select length(s_name) s_name from students;
++--------+
+| s_name |
++--------+
+|      6 |
+|      6 |
+|      6 |
+|      9 |
+|      6 |
+|      6 |
+|      6 |
+|     15 |
+|      6 |
+|      6 |
++--------+
+10 rows in set
+
+mysql> select length(s_name) length,s_name from students;
++--------+------------+
+| length | s_name     |
++--------+------------+
+|      6 | 小方       |
+|      6 | 世界       |
+|      6 | 四野       |
+|      9 | 黑黝黝     |
+|      6 | 小雪       |
+|      6 | 小哈       |
+|      6 | 小明       |
+|     15 | 雪之下雪乃 |
+|      6 | 小冰       |
+|      6 | 小方       |
++--------+------------+
+10 rows in set
+
+mysql> select left(s_name,1.5) s_left_name,right(s_name,1.5) s_right_name from students;
++-------------+--------------+
+| s_left_name | s_right_name |
++-------------+--------------+
+| 小方        | 小方         |
+| 世界        | 世界         |
+| 四野        | 四野         |
+| 黑黝        | 黝黝         |
+| 小雪        | 小雪         |
+| 小哈        | 小哈         |
+| 小明        | 小明         |
+| 雪之        | 雪乃         |
+| 小冰        | 小冰         |
+| 小方        | 小方         |
++-------------+--------------+
+10 rows in set
+
+mysql> select left(s_name,1.2) s_left_name,right(s_name,1.2) s_right_name from students;
++-------------+--------------+
+| s_left_name | s_right_name |
++-------------+--------------+
+| 小          | 方           |
+| 世          | 界           |
+| 四          | 野           |
+| 黑          | 黝           |
+| 小          | 雪           |
+| 小          | 哈           |
+| 小          | 明           |
+| 雪          | 乃           |
+| 小          | 冰           |
+| 小          | 方           |
++-------------+--------------+
+10 rows in set
+
+mysql> select length(s_name) length,s_name from students;
++--------+------------+
+| length | s_name     |
++--------+------------+
+|      6 | 小方       |
+|      6 | 世界       |
+|      6 | 四野       |
+|      9 | 黑黝黝     |
+|      6 | 小雪       |
+|      6 | 小哈       |
+|      6 | 小明       |
+|     15 | 雪之下雪乃 |
+|      6 | 小冰       |
+|      6 | 小方       |
++--------+------------+
+10 rows in set
+
+mysql> select lower(s_name) from students;
++---------------+
+| lower(s_name) |
++---------------+
+| 小方          |
+| 世界          |
+| 四野          |
+| 黑黝黝        |
+| 小雪          |
+| 小哈          |
+| 小明          |
+| 雪之下雪乃    |
+| 小冰          |
+| 小方          |
++---------------+
+10 rows in set
+
+mysql> select upper(s_name) from students;
++---------------+
+| upper(s_name) |
++---------------+
+| 小方          |
+| 世界          |
+| 四野          |
+| 黑黝黝        |
+| 小雪          |
+| 小哈          |
+| 小明          |
+| 雪之下雪乃    |
+| 小冰          |
+| 小方          |
++---------------+
+10 rows in set
+
+mysql> insert into students(s_name,s_sex,s_age,s_height) values('haha',2,14,128);
+Query OK, 1 row affected
+
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    2 | 世界       |    18 | 2     | NULL     |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
+|   15 | haha       |    14 | 2     |      128 |
++------+------------+-------+-------+----------+
+11 rows in set
+
+mysql> select lower(s_name) from students;
++---------------+
+| lower(s_name) |
++---------------+
+| 小方          |
+| 世界          |
+| 四野          |
+| 黑黝黝        |
+| 小雪          |
+| 小哈          |
+| 小明          |
+| 雪之下雪乃    |
+| 小冰          |
+| 小方          |
+| haha          |
++---------------+
+11 rows in set
+
+mysql> select upper(s_name) from students;
++---------------+
+| upper(s_name) |
++---------------+
+| 小方          |
+| 世界          |
+| 四野          |
+| 黑黝黝        |
+| 小雪          |
+| 小哈          |
+| 小明          |
+| 雪之下雪乃    |
+| 小冰          |
+| 小方          |
+| HAHA          |
++---------------+
+11 rows in set
+
+mysql> select replace(s_name,'小','小小') s_name from students;
++------------+
+| s_name     |
++------------+
+| 小小方     |
+| 世界       |
+| 四野       |
+| 黑黝黝     |
+| 小小雪     |
+| 小小哈     |
+| 小小明     |
+| 雪之下雪乃 |
+| 小小冰     |
+| 小小方     |
+| haha       |
++------------+
+11 rows in set
+
+mysql> select concat('kaway',s_name,'同学') s_name from students;
++---------------------+
+| s_name              |
++---------------------+
+| kaway小方同学       |
+| kaway世界同学       |
+| kaway四野同学       |
+| kaway黑黝黝同学     |
+| kaway小雪同学       |
+| kaway小哈同学       |
+| kaway小明同学       |
+| kaway雪之下雪乃同学 |
+| kaway小冰同学       |
+| kaway小方同学       |
+| kawayhaha同学       |
++---------------------+
+11 rows in set
+
+mysql> select concat('可爱的',s_name,'同学') s_name from students;
++----------------------+
+| s_name               |
++----------------------+
+| 可爱的小方同学       |
+| 可爱的世界同学       |
+| 可爱的四野同学       |
+| 可爱的黑黝黝同学     |
+| 可爱的小雪同学       |
+| 可爱的小哈同学       |
+| 可爱的小明同学       |
+| 可爱的雪之下雪乃同学 |
+| 可爱的小冰同学       |
+| 可爱的小方同学       |
+| 可爱的haha同学       |
++----------------------+
+11 rows in set
+
+mysql> 

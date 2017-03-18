@@ -1,0 +1,439 @@
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 丫丫   | 2   | 004  |  22 | 不详     | 小雅     | NULL     |
++--------+-----+------+-----+----------+----------+----------+
+4 rows in set
+
+mysql> select * from class;
++-----------+----+
+| className | id |
++-----------+----+
+| 中级班    |  1 |
+| 基础班    |  3 |
+| 特训班    |  5 |
+| 终极班    |  4 |
+| 高级班    |  2 |
++-----------+----+
+5 rows in set
+
+mysql> select s_name,class_id from students union select * from class;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| 黑黝黝 |        3 |
+| 小雪乃 |        2 |
+| 狂三   |        2 |
+| 丫丫   | NULL     |
+| 中级班 |        1 |
+| 基础班 |        3 |
+| 特训班 |        5 |
+| 终极班 |        4 |
+| 高级班 |        2 |
++--------+----------+
+9 rows in set
+
+mysql> select s_name,class_id from students union select * from students;
+1222 - The used SELECT statements have a different number of columns
+mysql> select s_name,class_id from students union select s_name,nickName from students;
++--------+-----------+
+| s_name | class_id  |
++--------+-----------+
+| 黑黝黝 | 3         |
+| 小雪乃 | 2         |
+| 狂三   | 2         |
+| 丫丫   | NULL      |
+| 黑黝黝 | 鏈夋湁    |
+| 小雪乃 | 闆箖閰? |
+| 狂三   | 浜烘皵涓? |
+| 丫丫   | 灏忛泤    |
++--------+-----------+
+8 rows in set
+
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | 不详    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | 不详    |       |
+| nickName | varchar(20) | YES  |     | 不详    |       |
+| class_id | int(10)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> select s_name,class_id from students union select className,id from class;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| 黑黝黝 |        3 |
+| 小雪乃 |        2 |
+| 狂三   |        2 |
+| 丫丫   | NULL     |
+| 中级班 |        1 |
+| 基础班 |        3 |
+| 特训班 |        5 |
+| 终极班 |        4 |
+| 高级班 |        2 |
++--------+----------+
+9 rows in set
+
+mysql> select s_name,nickName from students union select className,id from class;
++--------+-----------+
+| s_name | nickName  |
++--------+-----------+
+| 黑黝黝 | 鏈夋湁    |
+| 小雪乃 | 闆箖閰? |
+| 狂三   | 浜烘皵涓? |
+| 丫丫   | 灏忛泤    |
+| 中级班 | 1         |
+| 基础班 | 3         |
+| 特训班 | 5         |
+| 终极班 | 4         |
+| 高级班 | 2         |
++--------+-----------+
+9 rows in set
+
+mysql> select nickName,s_name from students union select className,id from class;
++----------+-----------+
+| nickName | s_name    |
++----------+-----------+
+| 有有     | 榛戦粷榛? |
+| 雪乃酱   | 灏忛洩涔? |
+| 人气三   | 鐙備笁    |
+| 小雅     | 涓斧    |
+| 中级班   | 1         |
+| 基础班   | 3         |
+| 特训班   | 5         |
+| 终极班   | 4         |
+| 高级班   | 2         |
++----------+-----------+
+9 rows in set
+
+mysql> select nickName,class_id from students union select className,id from class;
++----------+----------+
+| nickName | class_id |
++----------+----------+
+| 有有     |        3 |
+| 雪乃酱   |        2 |
+| 人气三   |        2 |
+| 小雅     | NULL     |
+| 中级班   |        1 |
+| 基础班   |        3 |
+| 特训班   |        5 |
+| 终极班   |        4 |
+| 高级班   |        2 |
++----------+----------+
+9 rows in set
+
+mysql> select nickName,class_id from students union select s_name,class_id from students;
++----------+----------+
+| nickName | class_id |
++----------+----------+
+| 有有     |        3 |
+| 雪乃酱   |        2 |
+| 人气三   |        2 |
+| 小雅     | NULL     |
+| 黑黝黝   |        3 |
+| 小雪乃   |        2 |
+| 狂三     |        2 |
+| 丫丫     | NULL     |
++----------+----------+
+8 rows in set
+
+mysql> select s_name,class_id from students union select s_name,class_id from students;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| 黑黝黝 |        3 |
+| 小雪乃 |        2 |
+| 狂三   |        2 |
+| 丫丫   | NULL     |
++--------+----------+
+4 rows in set
+
+mysql> select s_name,class_id from students union select s_name,class_id from students union select * from class;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| 黑黝黝 |        3 |
+| 小雪乃 |        2 |
+| 狂三   |        2 |
+| 丫丫   | NULL     |
+| 中级班 |        1 |
+| 基础班 |        3 |
+| 特训班 |        5 |
+| 终极班 |        4 |
+| 高级班 |        2 |
++--------+----------+
+9 rows in set
+
+mysql> select s_name,class_id from students union all select s_name,class_id from students;
++--------+----------+
+| s_name | class_id |
++--------+----------+
+| 黑黝黝 |        3 |
+| 小雪乃 |        2 |
+| 狂三   |        2 |
+| 丫丫   | NULL     |
+| 黑黝黝 |        3 |
+| 小雪乃 |        2 |
+| 狂三   |        2 |
+| 丫丫   | NULL     |
++--------+----------+
+8 rows in set
+
+mysql> select s_name case s_sex when '1' then '男' when '2' then '女' else '不详' end as s_sex case s_age when '18' then '成年人' else '未成年' end from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case s_sex when '1' then '男' when '2' then '女' else '不详' end as s_sex ca' at line 1
+mysql> select s_name,case s_sex when '1' then '男' when '2' then '女' else '不详' end as s_sex case s_age when '18' then '成年人' else '未成年' end from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case s_age when '18' then '成年人' else '未成年' end from students' at line 1
+mysql> select s_name,case s_sex when '1' then '男' when '2' then '女' else '不详' end as s_sex,case s_age when '18' then '成年人' else '未成年' end from students;
+1054 - Unknown column 's_sex' in 'field list'
+mysql> select s_name,case sex when '1' then '男' when '2' then '女' else '不详' end as s_sex case s_age when '18' then '成年人' else '未成年' end from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case s_age when '18' then '成年人' else '未成年' end from students' at line 1
+mysql> select s_name,case sex when '1' then '男' when '2' then '女' else '不详' end as s_sex,case s_age when '18' then '成年人' else '未成年' end as s_age from students;
+1054 - Unknown column 's_age' in 'field list'
+mysql> select s_name,case sex when '1' then '男' when '2' then '女' else '不详' end as s_sex,case age when '18' then '成年人' else '未成年' end as age from students;
++--------+-------+--------+
+| s_name | s_sex | age    |
++--------+-------+--------+
+| 黑黝黝 | 不详  | 未成年 |
+| 小雪乃 | 不详  | 未成年 |
+| 狂三   | 不详  | 成年人 |
+| 丫丫   | 女    | 未成年 |
++--------+-------+--------+
+4 rows in set
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 丫丫   | 2   | 004  |  22 | 不详     | 小雅     | NULL     |
++--------+-----+------+-----+----------+----------+----------+
+4 rows in set
+
+mysql> select s_name,case sex when '男' then '1' when '女' then '2' else '0' end as s_sex,case age when '18' then '成年人' else '未成年' end as age from students;
++--------+-------+--------+
+| s_name | s_sex | age    |
++--------+-------+--------+
+| 黑黝黝 | 1     | 未成年 |
+| 小雪乃 | 2     | 未成年 |
+| 狂三   | 2     | 成年人 |
+| 丫丫   | 0     | 未成年 |
++--------+-------+--------+
+4 rows in set
+
+mysql> select s_name,case sex when then '1' from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'then '1' from students' at line 1
+mysql> select s_name,case sex when '男' then '1' from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from students' at line 1
+mysql> select s_name,case sex when '男' then '1' end from students;
++--------+---------------------------------+
+| s_name | case sex when '男' then '1' end |
++--------+---------------------------------+
+| 黑黝黝 | 1                               |
+| 小雪乃 | NULL                            |
+| 狂三   | NULL                            |
+| 丫丫   | NULL                            |
++--------+---------------------------------+
+4 rows in set
+
+mysql> select s_name,case sex when then '1' end from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'then '1' end from students' at line 1
+mysql> select s_name,nullif(s_height,175) from students;
++--------+----------------------+
+| s_name | nullif(s_height,175) |
++--------+----------------------+
+| 黑黝黝 | NULL                 |
+| 小雪乃 | 165                  |
+| 狂三   | 165                  |
+| 丫丫   | 不详                 |
++--------+----------------------+
+4 rows in set
+
+mysql> select s_name,case s_height when 175 then null else '不详' end from students;
++--------+--------------------------------------------------+
+| s_name | case s_height when 175 then null else '不详' end |
++--------+--------------------------------------------------+
+| 黑黝黝 | NULL                                             |
+| 小雪乃 | 不详                                             |
+| 狂三   | 不详                                             |
+| 丫丫   | 不详                                             |
++--------+--------------------------------------------------+
+4 rows in set
+
+mysql> select s_name,case when s_height=175 then null else '不详' end from students;
++--------+--------------------------------------------------+
+| s_name | case when s_height=175 then null else '不详' end |
++--------+--------------------------------------------------+
+| 黑黝黝 | NULL                                             |
+| 小雪乃 | 不详                                             |
+| 狂三   | 不详                                             |
+| 丫丫   | 不详                                             |
++--------+--------------------------------------------------+
+4 rows in set
+
+mysql> select substring('黑黝黝你好呀',-2,2);
++--------------------------------+
+| substring('黑黝黝你好呀',-2,2) |
++--------------------------------+
+| 好呀                           |
++--------------------------------+
+1 row in set
+
+mysql> select substring('habby new year 2017',-6);
++-------------------------------------+
+| substring('habby new year 2017',-6) |
++-------------------------------------+
+| r 2017                              |
++-------------------------------------+
+1 row in set
+
+mysql> select substring('habby new year 2017',0,5);
++--------------------------------------+
+| substring('habby new year 2017',0,5) |
++--------------------------------------+
+|                                      |
++--------------------------------------+
+1 row in set
+
+mysql> select substring('habby new year 2017',1,5);
++--------------------------------------+
+| substring('habby new year 2017',1,5) |
++--------------------------------------+
+| habby                                |
++--------------------------------------+
+1 row in set
+
+mysql> select left('hello',2);
++-----------------+
+| left('hello',2) |
++-----------------+
+| he              |
++-----------------+
+1 row in set
+
+mysql> select left('hello',5);
++-----------------+
+| left('hello',5) |
++-----------------+
+| hello           |
++-----------------+
+1 row in set
+
+mysql> select right('hello',2);
++------------------+
+| right('hello',2) |
++------------------+
+| lo               |
++------------------+
+1 row in set
+
+mysql> select length('黑黝黝');
++------------------+
+| length('黑黝黝') |
++------------------+
+|                9 |
++------------------+
+1 row in set
+
+mysql> select char_length('黑黝黝');
++-----------------------+
+| char_length('黑黝黝') |
++-----------------------+
+|                     3 |
++-----------------------+
+1 row in set
+
+mysql> select character_length('黑黝黝');
++----------------------------+
+| character_length('黑黝黝') |
++----------------------------+
+|                          3 |
++----------------------------+
+1 row in set
+
+mysql> select character_length('1');
++-----------------------+
+| character_length('1') |
++-----------------------+
+|                     1 |
++-----------------------+
+1 row in set
+
+mysql> select length('1');
++-------------+
+| length('1') |
++-------------+
+|           1 |
++-------------+
+1 row in set
+
+mysql> select length('12');
++--------------+
+| length('12') |
++--------------+
+|            2 |
++--------------+
+1 row in set
+
+mysql> select length('黑');
++--------------+
+| length('黑') |
++--------------+
+|            3 |
++--------------+
+1 row in set
+
+mysql> select character_length('12');
++------------------------+
+| character_length('12') |
++------------------------+
+|                      2 |
++------------------------+
+1 row in set
+
+mysql> select 2+'2';
++-------+
+| 2+'2' |
++-------+
+|     4 |
++-------+
+1 row in set
+
+mysql> select '2'+'2';
++---------+
+| '2'+'2' |
++---------+
+|       4 |
++---------+
+1 row in set
+
+mysql> select concat('hehe',null,2);
++-----------------------+
+| concat('hehe',null,2) |
++-----------------------+
+| NULL                  |
++-----------------------+
+1 row in set
+
+mysql> select concat(cast(int 2	as char),char '2');
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int 2	as char),char '2')' at line 1
+mysql> select concat(cast(2 as char),'2');
++-----------------------------+
+| concat(cast(2 as char),'2') |
++-----------------------------+
+| 22                          |
++-----------------------------+
+1 row in set
+
+mysql> 

@@ -1,0 +1,187 @@
+mysql> select s_name,s_sex from students;
+ 
++------------+-------+
+| s_name     | s_sex |
++------------+-------+
+| 小方       | 1     |
+| 四野       | 1     |
+| 黑黝黝     | 1     |
+| 小雪       | 2     |
+| 小哈       | 0     |
+| 小明       | 1     |
+| 雪之下雪乃 | 2     |
+| 小冰       | 2     |
++------------+-------+
+8 rows in set
+
+mysql> select 5+5;
++-----+
+| 5+5 |
++-----+
+|  10 |
++-----+
+1 row in set
+
+mysql> select 5-5;
++-----+
+| 5-5 |
++-----+
+|   0 |
++-----+
+1 row in set
+
+mysql> select 5/5;
++-----+
+| 5/5 |
++-----+
+| 1   |
++-----+
+1 row in set
+
+mysql> select 5*5;
++-----+
+| 5*5 |
++-----+
+|  25 |
++-----+
+1 row in set
+
+mysql> select 5%5;
++-----+
+| 5%5 |
++-----+
+|   0 |
++-----+
+1 row in set
+
+mysql> select 5%10;
++------+
+| 5%10 |
++------+
+|    5 |
++------+
+1 row in set
+
+mysql> select 5-10-5+22;
++-----------+
+| 5-10-5+22 |
++-----------+
+|        12 |
++-----------+
+1 row in set
+
+mysql> select 5-10-5+22%2+10/2;
++------------------+
+| 5-10-5+22%2+10/2 |
++------------------+
+| -5               |
++------------------+
+1 row in set
+
+mysql> select * from students where s_name;
+Empty set
+
+mysql> select * from students where s_name=1;
+Empty set
+
+mysql> select * from students where s_name;
+Empty set
+
+mysql> select * from students where 2;
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students where true=ture;
+1054 - Unknown column 'ture' in 'where clause'
+mysql> select * from students where true=true;
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students where 0;
+Empty set
+
+mysql> select * from students where 1;
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students where '';
+Empty set
+
+mysql> select * from students where false;
+Empty set
+
+mysql> select * from students where undefined;
+1054 - Unknown column 'undefined' in 'where clause'
+mysql> select * from students where 'undefined';
+Empty set
+
+mysql> select * from students where 'null';
+Empty set
+
+mysql> select * from students where 'null'=1;
+Empty set
+
+mysql> select * from students where 'null'='null';
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> select * from students where false=false;
++------+------------+-------+-------+
+| s_no | s_name     | s_age | s_sex |
++------+------------+-------+-------+
+|    1 | 小方       |    18 | 1     |
+|    7 | 四野       |    22 | 1     |
+|    8 | 黑黝黝     |    23 | 1     |
+|    9 | 小雪       |    20 | 2     |
+|   10 | 小哈       |    25 | 0     |
+|   11 | 小明       |    22 | 1     |
+|   12 | 雪之下雪乃 |    18 | 2     |
+|   13 | 小冰       |    19 | 2     |
++------+------------+-------+-------+
+8 rows in set
+
+mysql> 

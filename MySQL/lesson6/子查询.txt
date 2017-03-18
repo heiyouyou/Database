@@ -1,0 +1,214 @@
+mysql> select * from students where class_id=(select id from students);
+1054 - Unknown column 'id' in 'field list'
+mysql> select * from students where class_id=(select id from class);
+1242 - Subquery returns more than 1 row
+mysql> select * from students where class_id in(select id from class);
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 鲁鲁修 | 男  | 006  |  19 | 178      | 吾王殿下 |        5 |
+| 朱雀   | 男  | 007  |  19 | 175      | 雀       |        5 |
+| 茜茜   | 女  | 008  |  24 | 175      | 女王     |        2 |
++--------+-----+------+-----+----------+----------+----------+
+5 rows in set
+
+mysql> select * from students where class_id = (select id from class where className='高级班');
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 茜茜   | 女  | 008  |  24 | 175      | 女王     |        2 |
++--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> /*将内层的查询结果集作为临时表，供外层使用*/
+select * from (select students.s_name 姓名,ifnull(class.className,'未知班级') 班级 from students left join class on students.class_id = class.id) tmp
+    -> /*将内层的查询结果集作为临时表，供外层使用*/
+select * from (select students.s_name 姓名,ifnull(class.className,'未知班级') 班级 from students left join class on students.class_id = class.id) tmp;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from (select students.s_name 姓名,ifnull(class.className,'未知班?' at line 5
+mysql> /*将内层的查询结果集作为临时表，供外层使用*/
+select * from (select students.s_name 姓名,ifnull(class.className,'未知班级') 班级 from students left join class on students.class_id = class.id) tmp;
++--------+----------+
+| 姓名   | 班级     |
++--------+----------+
+| 小雪乃 | 高级班   |
+| 狂三   | 高级班   |
+| 鲁鲁修 | 特训班   |
+| 朱雀   | 特训班   |
+| 茜茜   | 高级班   |
+| 女王   | 未知班级 |
++--------+----------+
+6 rows in set
+
+mysql> select * from (select students.s_name 姓名,ifnull(class.className,'未知班级') 班级 from students left join class on students.class_id = class.id) tmp where tmp.班级='未知班级';
++------+----------+
+| 姓名 | 班级     |
++------+----------+
+| 女王 | 未知班级 |
++------+----------+
+1 row in set
+
+mysql> select s_name 学员姓名,(select className from class c where c.id=s.class_id) 班级名称 from students s;
++----------+----------+
+| 学员姓名 | 班级名称 |
++----------+----------+
+| 小雪乃   | 高级班   |
+| 狂三     | 高级班   |
+| 鲁鲁修   | 特训班   |
+| 朱雀     | 特训班   |
+| 茜茜     | 高级班   |
+| 女王     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select * from class;
++-----------+----+
+| className | id |
++-----------+----+
+| 中级班    |  1 |
+| 劣等班    |  6 |
+| 基础班    |  3 |
+| 特训班    |  5 |
+| 终极班    |  4 |
+| 高级班    |  2 |
++-----------+----+
+6 rows in set
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 鲁鲁修 | 男  | 006  |  19 | 178      | 吾王殿下 |        5 |
+| 朱雀   | 男  | 007  |  19 | 175      | 雀       |        5 |
+| 茜茜   | 女  | 008  |  24 | 175      | 女王     |        2 |
+| 女王   | 女  | 009  |  19 | 175      | 魔女     | NULL     |
++--------+-----+------+-----+----------+----------+----------+
+6 rows in set
+
+mysql> select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='特训班');
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 小雪乃   |        2 |
+| 狂三     |        2 |
+| 鲁鲁修   |        5 |
+| 朱雀     |        5 |
+| 茜茜     |        2 |
+| 女王     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='特训班' and id=s.class_id);
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 鲁鲁修   |        5 |
+| 朱雀     |        5 |
++----------+----------+
+2 rows in set
+
+mysql> select s_name 学员姓名,(select className from class c where c.id=s.class_id and s.class_id is not null) 班级名称 from students s;
++----------+----------+
+| 学员姓名 | 班级名称 |
++----------+----------+
+| 小雪乃   | 高级班   |
+| 狂三     | 高级班   |
+| 鲁鲁修   | 特训班   |
+| 朱雀     | 特训班   |
+| 茜茜     | 高级班   |
+| 女王     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select s_name 学员姓名,(select className from class c where c.id=s.class_id and s.class_id not null) 班级名称 from students s;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null) 班级名称 from students s' at line 1
+mysql> select s_name 学员姓名,(select className from class c where c.id=s.class_id and s.class_id is null) 班级名称 from students s;
++----------+----------+
+| 学员姓名 | 班级名称 |
++----------+----------+
+| 小雪乃   | NULL     |
+| 狂三     | NULL     |
+| 鲁鲁修   | NULL     |
+| 朱雀     | NULL     |
+| 茜茜     | NULL     |
+| 女王     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='特训班');
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 小雪乃   |        2 |
+| 狂三     |        2 |
+| 鲁鲁修   |        5 |
+| 朱雀     |        5 |
+| 茜茜     |        2 |
+| 女王     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='特训班' and id=s.class_id);
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 鲁鲁修   |        5 |
+| 朱雀     |        5 |
++----------+----------+
+2 rows in set
+
+mysql> select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='高级班' and id=s.class_id);
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 小雪乃   |        2 |
+| 狂三     |        2 |
+| 茜茜     |        2 |
++----------+----------+
+3 rows in set
+
+mysql> select s_name 学员姓名,class_id from students where class_id=(select class_id from students where s_name='鲁鲁修');
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 鲁鲁修   |        5 |
+| 朱雀     | NULL     |
++----------+----------+
+2 rows in set
+
+mysql> select s_name 学员姓名,class_id from students where class_id=(select class_id from students where s_name='小雪乃');
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 小雪乃   |        2 |
+| 狂三     |        2 |
+| 茜茜     |        2 |
++----------+----------+
+3 rows in set
+
+mysql> select s_name 学员姓名,class_id from students s where exists(select 1 from students s1 where s_name='鲁鲁修' and s.class_id=s1.class_id) order by s_name desc,class_id;
+
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 鲁鲁修   |        5 |
+| 朱雀     |        5 |
++----------+----------+
+2 rows in set
+
+mysql> select s_name 学员姓名,class_id from students s where exists(select 1 from students s1 where s_name='鲁鲁修' and s.class_id=s1.class_id) order by s_name asc,class_id;
+
++----------+----------+
+| 学员姓名 | class_id |
++----------+----------+
+| 朱雀     |        5 |
+| 鲁鲁修   |        5 |
++----------+----------+
+2 rows in set
+
+mysql> 

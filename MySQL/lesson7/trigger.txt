@@ -1,0 +1,67 @@
+/*触发器创建*/
+/*new代表新数据创建时使用，创建一个触发器当插入之前学员数据年龄小于18的，就自动默认18岁*/
+create trigger tr_student before insert on students for each row
+begin
+ if(new.age<18)
+ then
+	set new.age = 18;
+ end if;
+end
+
+insert into students(s_no,s_name,age,sex,s_height,nickName,class_id) values('011','松羊夫人',17,'女',167,'小羊',default);
+insert into students(s_no,s_name,age,sex,s_height,nickName,class_id) values('012','松羊',19,'女',168,'小羊',1);
+select * from students;
+
+/*old代表在更新数据之前的原先数据，更新数据时，如果年龄少于18，就自动默认18，身高小于165，就用原先的身高*/
+create trigger tr_student_update before update on students for each row
+begin 
+	if(new.age<18)
+	then
+		set new.age = 18;
+	end if;
+	if(new.s_height<165)
+	then
+		set new.s_height = old.s_height;
+	end if;
+end
+update students set s_height=164 where s_no='006';
+
+create trigger tr_test_delete before delete on test for each row
+begin
+	/*delete触发器中不能够有new关键字*/
+	delete from class where className=old.className;
+end;
+delete from test where className='高级班';
+drop trigger tr_test_delete;
+select * from test;
+
+/*当students表插入新数据后，触发器同时给students_bak表插入新的数据*/
+create trigger tr_student_after after insert on students for each row
+begin
+	insert into students_bak values(new.s_name,new.sex,new.s_no,new.age);
+end
+delete from students where s_no='013';
+insert into students(s_no,s_name,age,sex,s_height,nickName,class_id) values('013','松松',15,'女',168,'小松',1);
+select * from students_bak;
+
+/*更新students表数据的同时更新students_bak表的数据*/
+create trigger tr_student_after_update after update on students for each row
+begin
+	update students_bak set s_name=new.s_name where s_name='黑黝黝';
+end
+update students set s_name='heiyouyou' where s_no='007';
+
+
+/*删除students表的数据后，同时删除另一个表的相同数据*/
+create trigger tr_student_after_delete after delete on students for each row
+begin
+ 		delete from students_bak where s_name=old.s_name;
+end
+delete from students where s_name='松松';
+select * from students;
+select * from students_bak;
+
+/*删除触发器*/
+drop trigger tr_student_after_delete
+/*删除存在的表*/ 
+DROP TABLE IF EXISTS tab1;

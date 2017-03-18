@@ -1,0 +1,47 @@
+/**游标start**/
+/*将年龄小于22岁的，身高低于176的学员改成180，其他的身高改成175*/
+delimiter$$
+DROP PROCEDURE IF EXISTS pro_students;
+CREATE PROCEDURE pro_students()
+BEGIN
+	/*定义三个变量用于存储游标提取数据的字段值*/
+	DECLARE tage INT;
+	DECLARE theight INT;
+	DECLARE tno VARCHAR(20);
+	/*定义一个处理提取数据时，发生1329错误状态码的变量*/
+	DECLARE state VARCHAR(20);
+	/*声明游标*/
+	DECLARE cur_students CURSOR FOR SELECT s_no,age,s_height FROM students;
+	/*声明1329错误为error*/
+	DECLARE CONTINUE HANDLER FOR 1329 SET state='error';
+	/*打开游标，即是创建结果集(表)的过程*/
+	OPEN cur_students;
+	/*循环语句*/
+	REPEAT
+		/*fetch每次只能提取一条数据，使用循环语句提取所有数据，并且赋值给对应的变量*/
+		FETCH cur_students INTO tno,tage,theight;
+			/*对提取出来的数据做业务处理*/
+			IF tage<22 && theight<176
+			THEN
+				UPDATE students SET s_height=180 WHERE s_no=tno;
+			ELSE
+				UPDATE students SET s_height=175 WHERE s_no=tno;
+			END IF;
+		/*until直到发生1329错误，即是没有数据可以提取就跳出循环*/
+		UNTIL state='error';
+	END REPEAT;
+	/*关闭游标*/
+	CLOSE cur_students;
+END $$
+delimiter;
+CALL pro_students();
+/**游标end**/
+
+
+注意：使用游标一般结合存储过程和函数使用，但是很少使用，包括存储过程
+/**MySQL中三种循环模式**/
+1、loop...end loop
+跳出循环使用:leave 循环语句名称
+2、repeat...end REPEAT
+跳出循环使用:until 表达式，如:until 22>21;
+3、while 表达式...end while

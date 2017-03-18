@@ -1,0 +1,303 @@
+mysql> select * from  students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> select * from class;
++-----------+----+
+| className | id |
++-----------+----+
+| 中级班    |  1 |
+| 基础班    |  3 |
+| 特训班    |  5 |
+| 终极班    |  4 |
+| 高级班    |  2 |
++-----------+----+
+5 rows in set
+
+mysql> select *,case class_id when '2' then '高级班' when '3' then '基础班' else '中级班' end case as class_id from students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case as class_id from students' at line 1
+mysql> select *,case class_id when '2' then '高级班' when '3' then '基础班' else '中级班' end from students;
++--------+-----+------+-----+----------+----------+----------+-------------------------------------------------------------------------------+
+| s_name | sex | s_no | age | s_height | nickName | class_id | case class_id when '2' then '高级班' when '3' then '基础班' else '中级班' end |
++--------+-----+------+-----+----------+----------+----------+-------------------------------------------------------------------------------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班                                                                        |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班                                                                        |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班                                                                        |
++--------+-----+------+-----+----------+----------+----------+-------------------------------------------------------------------------------+
+3 rows in set
+
+mysql> select *,case class_id when '2' then '高级班' when '3' then '基础班' else '中级班' end as class_id from students;
++--------+-----+------+-----+----------+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id | class_id |
++--------+-----+------+-----+----------+----------+----------+----------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班   |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班   |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班   |
++--------+-----+------+-----+----------+----------+----------+----------+
+3 rows in set
+
+mysql> select * from class c left join students s on s.classs_id = c.id;
+1054 - Unknown column 's.classs_id' in 'on clause'
+mysql> select * from class c left join students s on c.id = s.class_id;
+ 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 基础班    |  3 | 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 |
++-----------+----+--------+------+------+------+----------+----------+----------+
+6 rows in set
+
+mysql> select * from class c left join students s on s.classs_id = c.id;
+1054 - Unknown column 's.classs_id' in 'on clause'
+mysql> select * from class c left join students s on c.id = s.class_id;
+ 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 基础班    |  3 | 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 |
++-----------+----+--------+------+------+------+----------+----------+----------+
+6 rows in set
+
+mysql> select * from students s left join class c on s.class_id=c.id; 
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班    |  3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+3 rows in set
+
+mysql> select * from students s left join class c on s.s_no=c.id; 
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 中级班    |  1 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 基础班    |  3 |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+3 rows in set
+
+mysql> select * from students s left join class c on s.s_height=c.id; 
++--------+-----+------+-----+----------+----------+----------+-----------+------+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id   |
++--------+-----+------+-----+----------+----------+----------+-----------+------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | NULL      | NULL |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | NULL      | NULL |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | NULL      | NULL |
++--------+-----+------+-----+----------+----------+----------+-----------+------+
+3 rows in set
+
+mysql> select * from students s left join class c on s.s_sex=c.id; 
+1054 - Unknown column 's.s_sex' in 'on clause'
+mysql> select * from students s left join class c on s.sex=c.id; 
++--------+-----+------+-----+----------+----------+----------+-----------+------+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id   |
++--------+-----+------+-----+----------+----------+----------+-----------+------+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | NULL      | NULL |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | NULL      | NULL |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | NULL      | NULL |
++--------+-----+------+-----+----------+----------+----------+-----------+------+
+3 rows in set
+
+mysql> select * from students s left join class c on s.class_id=c.id;
+ 
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| s_name | sex | s_no | age | s_height | nickName | class_id | className | id |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+| 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 | 基础班    |  3 |
+| 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+-----+------+-----+----------+----------+----------+-----------+----+
+3 rows in set
+
+mysql> select * from class c left join students s on c.id = s.class_id; 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 基础班    |  3 | 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 |
++-----------+----+--------+------+------+------+----------+----------+----------+
+6 rows in set
+
+mysql> select * from class c left join students s on c.id = s.s_height;
+ 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 基础班    |  3 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
++-----------+----+--------+------+------+------+----------+----------+----------+
+5 rows in set
+
+mysql> select * from class c left join students s on c.id = s.sex; 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 基础班    |  3 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
++-----------+----+--------+------+------+------+----------+----------+----------+
+5 rows in set
+
+mysql> select * from class c left join students s on c.id = s.s_no;
+ 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 |
+| 基础班    |  3 | 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 |
++-----------+----+--------+------+------+------+----------+----------+----------+
+5 rows in set
+
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | 不详    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | 不详    |       |
+| nickName | varchar(20) | YES  |     | 不详    |       |
+| class_id | int(10)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> select * from class c left join students s on c.id = s.class_id; 
++-----------+----+--------+------+------+------+----------+----------+----------+
+| className | id | s_name | sex  | s_no | age  | s_height | nickName | class_id |
++-----------+----+--------+------+------+------+----------+----------+----------+
+| 中级班    |  1 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 基础班    |  3 | 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 |
+| 特训班    |  5 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 终极班    |  4 | NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     |
+| 高级班    |  2 | 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 |
++-----------+----+--------+------+------+------+----------+----------+----------+
+6 rows in set
+
+mysql> select * from students s right join class c s.class_id = c.id;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's.class_id = c.id' at line 1
+mysql> select * from students s right join class c c.id=s.class_id;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'c.id=s.class_id' at line 1
+mysql> select * from students s right join class c on c.id=s.class_id;
++--------+------+------+------+----------+----------+----------+-----------+----+
+| s_name | sex  | s_no | age  | s_height | nickName | class_id | className | id |
++--------+------+------+------+----------+----------+----------+-----------+----+
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 中级班    |  1 |
+| 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 | 基础班    |  3 |
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 特训班    |  5 |
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 终极班    |  4 |
+| 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+------+------+------+----------+----------+----------+-----------+----+
+6 rows in set
+
+mysql> select * from students s right join class c on s.class_id=c.id;
++--------+------+------+------+----------+----------+----------+-----------+----+
+| s_name | sex  | s_no | age  | s_height | nickName | class_id | className | id |
++--------+------+------+------+----------+----------+----------+-----------+----+
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 中级班    |  1 |
+| 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 | 基础班    |  3 |
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 特训班    |  5 |
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 终极班    |  4 |
+| 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+------+------+------+----------+----------+----------+-----------+----+
+6 rows in set
+
+mysql> select * from students s right join class c on c.id = s.class_id;
++--------+------+------+------+----------+----------+----------+-----------+----+
+| s_name | sex  | s_no | age  | s_height | nickName | class_id | className | id |
++--------+------+------+------+----------+----------+----------+-----------+----+
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 中级班    |  1 |
+| 黑黝黝 | 男   | 001  |   22 | 175      | 有有     |        3 | 基础班    |  3 |
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 特训班    |  5 |
+| NULL   | NULL | NULL | NULL | NULL     | NULL     | NULL     | 终极班    |  4 |
+| 小雪乃 | 女   | 002  |   20 | 165      | 雪乃酱   |        2 | 高级班    |  2 |
+| 狂三   | 女   | 003  |   18 | 165      | 人气三   |        2 | 高级班    |  2 |
++--------+------+------+------+----------+----------+----------+-----------+----+
+6 rows in set
+
+mysql> select * from class c right join students s on s.class_id = c.id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> select * from class c right join students s on c.id=s.class_id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> select * from class c right join students s on c.id=c.id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 中级班    |  1 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 特训班    |  5 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 终极班    |  4 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 中级班    |  1 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 基础班    |  3 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 特训班    |  5 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 终极班    |  4 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 中级班    |  1 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 基础班    |  3 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 特训班    |  5 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 终极班    |  4 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+15 rows in set
+
+mysql> select * from class c right join students s on c.id=s.class_id;
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| className | id | s_name | sex | s_no | age | s_height | nickName | class_id |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+| 基础班    |  3 | 黑黝黝 | 男  | 001  |  22 | 175      | 有有     |        3 |
+| 高级班    |  2 | 小雪乃 | 女  | 002  |  20 | 165      | 雪乃酱   |        2 |
+| 高级班    |  2 | 狂三   | 女  | 003  |  18 | 165      | 人气三   |        2 |
++-----------+----+--------+-----+------+-----+----------+----------+----------+
+3 rows in set
+
+mysql> 

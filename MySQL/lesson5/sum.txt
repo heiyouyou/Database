@@ -1,0 +1,115 @@
+mysql> select * from students;
++------+------------+-------+-------+----------+
+| s_no | s_name     | s_age | s_sex | s_height |
++------+------------+-------+-------+----------+
+|    1 | 小方       |    18 | 1     |      175 |
+|    2 | 世界       |    18 | 2     | NULL     |
+|    7 | 四野       |    22 | 1     |      185 |
+|    8 | 黑黝黝     |    23 | 1     |      185 |
+|    9 | 小雪       |    20 | 2     |      185 |
+|   10 | 小哈       |    25 | 0     |      185 |
+|   11 | 小明       |    22 | 1     |      185 |
+|   12 | 雪之下雪乃 |    18 | 2     |      185 |
+|   13 | 小冰       |    19 | 2     |      185 |
+|   14 | 小方       |    18 | 2     |      168 |
+|   15 | haha       |    14 | 2     |      128 |
++------+------------+-------+-------+----------+
+11 rows in set
+
+mysql> select avg(s_age) from students;
++------------+
+| avg(s_age) |
++------------+
+| 19.7273    |
++------------+
+1 row in set
+
+mysql> select avg(2) from students;
++--------+
+| avg(2) |
++--------+
+| 2      |
++--------+
+1 row in set
+
+mysql> select avg(s_height) from students;
++---------------+
+| avg(s_height) |
++---------------+
+| 176.6000      |
++---------------+
+1 row in set
+
+mysql> select count(s_height) from students;
++-----------------+
+| count(s_height) |
++-----------------+
+|              10 |
++-----------------+
+1 row in set
+
+mysql> select count(2) from students;
++----------+
+| count(2) |
++----------+
+|       11 |
++----------+
+1 row in set
+
+mysql> select count(s_age) from students;
++--------------+
+| count(s_age) |
++--------------+
+|           11 |
++--------------+
+1 row in set
+
+mysql> select min(s_age) from students;
++------------+
+| min(s_age) |
++------------+
+|         14 |
++------------+
+1 row in set
+
+mysql> select max(s_age) from students;
++------------+
+| max(s_age) |
++------------+
+|         25 |
++------------+
+1 row in set
+
+mysql> select sum(s_age) from students;
++------------+
+| sum(s_age) |
++------------+
+| 217        |
++------------+
+1 row in set
+
+mysql> select sum(s_height) from students;
++---------------+
+| sum(s_height) |
++---------------+
+| 1766          |
++---------------+
+1 row in set
+
+mysql> select count(s_height) from students;
++-----------------+
+| count(s_height) |
++-----------------+
+|              10 |
++-----------------+
+1 row in set
+
+mysql> select count(s_name) from students;
++---------------+
+| count(s_name) |
++---------------+
+|            11 |
++---------------+
+1 row in set
+
+mysql> 

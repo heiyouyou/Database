@@ -1,0 +1,35 @@
+mysql> alter table class add constraint class_up unique(className);
+Query OK, 2 rows affected
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into class values('中级班',3);l
+1062 - Duplicate entry '中级班' for key 'class_up'
+    -> insert into class values('高级班',3);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'l
+
+insert into class values('高级班',3)' at line 1
+mysql> insert into class values('高级班',3);
+1062 - Duplicate entry '高级班' for key 'class_up'
+mysql> insert into class values('基础班',3);
+Query OK, 1 row affected
+
+mysql> select * from class;
++-----------+----+
+| className | id |
++-----------+----+
+| 中级班    |  1 |
+| 基础班    |  3 |
+| 高级班    |  2 |
++-----------+----+
+3 rows in set
+
+mysql> desc class;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| className | varchar(20) | YES  | UNI | NULL    |       |
+| id        | int(10)     | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set
+
+mysql> 

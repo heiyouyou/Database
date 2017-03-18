@@ -1,0 +1,35 @@
+/**存储过程start**/
+delimiter$$
+DROP PROCEDURE IF EXISTS pro_getNo;
+/*定义一个获取s_no学号的存储过程，in表示参数可读可写不可改变返回，out表示参数可读可写可改变*/
+CREATE PROCEDURE pro_getNo(IN pname VARCHAR(20),OUT pno VARCHAR(10))
+BEGIN
+	/*将查询出来的s_no通过关键字INTO赋值给pno进行返回*/
+	SELECT s_no INTO pno FROM students WHERE s_name=pname;
+	/*此语句不能改变in类型的参数值并返回*/
+	SELECT s_no INTO pname FROM students WHERE s_name=pname;
+END $$
+delimiter;
+/*全局定义两个变量(注意要@符号开头)*/
+set @pnames='女王';
+set @pnos='';
+/*使用call执行存储过程，不能使用execute、select执行*/
+CALL pro_getNo(@pnames,@pnos);
+SELECT * FROM students WHERE s_no=@pnos;
+SELECT @pnames;
+SELECT @pnos;
+
+delimiter$$
+DROP PROCEDURE IF EXISTS pro_updateHeight;
+/*inout表示参数既可以输入又可以输出返回改变*/
+CREATE PROCEDURE pro_updateHeight(INOUT pname VARCHAR(20))
+BEGIN
+	UPDATE students SET s_height=176 WHERE s_name=pname;
+	SELECT CONCAT(s_height,s_no) INTO pname FROM students WHERE s_name=pname;
+END $$
+delimiter;
+SET @pname = '女王';
+SET @pname = '松羊夫人';
+CALL pro_updateHeight(@pname);
+SELECT @pname;
+/**存储过程end**/

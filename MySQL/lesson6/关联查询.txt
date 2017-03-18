@@ -1,0 +1,157 @@
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | ²»Ïê    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | ²»Ïê    |       |
+| nickName | varchar(20) | YES  |     | ²»Ïê    |       |
+| class_id | int(10)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> insert into students(s_name,age,s_no,sex,s_height,nickName,class_id) values('Â³Â³ÐÞ',19,'006','ÄÐ',178,'ÎáÍõµîÏÂ',(select id from class where className='ÌØÑµ°à'));
+
+1062 - Duplicate entry '006' for key 'PRIMARY'
+mysql> insert into students(s_name,age,s_no,sex,s_height,nickName,class_id) values('Â³Â³ÐÞ',19,'006','ÄÐ',178,'ÎáÍõµîÏÂ',(select className from class where className='ÌØÑµ°à'));
+
+1062 - Duplicate entry '006' for key 'PRIMARY'
+mysql> insert into students(s_name,age,s_no,sex,s_height,nickName,class_id) values('ÖìÈ¸',19,'007','ÄÐ',175,'È¸',(select className from class where className='ÌØÑµ°à'));
+
+1452 - Cannot add or update a child row: a foreign key constraint fails (`school`.`students`, CONSTRAINT `id_fk` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`))
+mysql> insert into students(s_name,age,s_no,sex,s_height,nickName,class_id) values('ÖìÈ¸',19,'007','ÄÐ',175,'È¸',(select id from class where className='ÌØÑµ°à'));
+
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| ºÚ÷î÷î | ÄÐ  | 001  |  22 | 175      | ÓÐÓÐ     |        3 |
+| Ð¡Ñ©ÄË | Å®  | 002  |  20 | 165      | Ñ©ÄË½´   |        2 |
+| ¿ñÈý   | Å®  | 003  |  18 | 165      | ÈËÆøÈý   |        2 |
+| Ñ¾Ñ¾   | 2   | 004  |  22 | ²»Ïê     | Ð¡ÑÅ     | NULL     |
+| À×Ä·   | Å®  | 005  |  19 | 164      | À×Ä·½´   |        3 |
+| Â³Â³ÐÞ | ÄÐ  | 006  |  19 | 178      | ÎáÍõµîÏÂ |        5 |
+| ÖìÈ¸   | ÄÐ  | 007  |  19 | 175      | È¸       |        5 |
++--------+-----+------+-----+----------+----------+----------+
+7 rows in set
+
+mysql> update students set class_id=(select id from class where className='»ù´¡°à') where class_id is null;
+
+Query OK, 0 rows affected
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| ºÚ÷î÷î | ÄÐ  | 001  |  22 | 175      | ÓÐÓÐ     |        3 |
+| Ð¡Ñ©ÄË | Å®  | 002  |  20 | 165      | Ñ©ÄË½´   |        2 |
+| ¿ñÈý   | Å®  | 003  |  18 | 165      | ÈËÆøÈý   |        2 |
+| Ñ¾Ñ¾   | 2   | 004  |  22 | ²»Ïê     | Ð¡ÑÅ     |        3 |
+| À×Ä·   | Å®  | 005  |  19 | 164      | À×Ä·½´   |        3 |
+| Â³Â³ÐÞ | ÄÐ  | 006  |  19 | 178      | ÎáÍõµîÏÂ |        5 |
+| ÖìÈ¸   | ÄÐ  | 007  |  19 | 175      | È¸       |        5 |
++--------+-----+------+-----+----------+----------+----------+
+7 rows in set
+
+mysql> insert into students(s_name,age,s_no,sex,s_height,nickName,class_id) values('ÜçÜç',24,'008','Å®',175,'Å®Íõ',(select id from class where className='¸ß¼¶°à'));
+
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| ºÚ÷î÷î | ÄÐ  | 001  |  22 | 175      | ÓÐÓÐ     |        3 |
+| Ð¡Ñ©ÄË | Å®  | 002  |  20 | 165      | Ñ©ÄË½´   |        2 |
+| ¿ñÈý   | Å®  | 003  |  18 | 165      | ÈËÆøÈý   |        2 |
+| Ñ¾Ñ¾   | 2   | 004  |  22 | ²»Ïê     | Ð¡ÑÅ     |        3 |
+| À×Ä·   | Å®  | 005  |  19 | 164      | À×Ä·½´   |        3 |
+| Â³Â³ÐÞ | ÄÐ  | 006  |  19 | 178      | ÎáÍõµîÏÂ |        5 |
+| ÖìÈ¸   | ÄÐ  | 007  |  19 | 175      | È¸       |        5 |
+| ÜçÜç   | Å®  | 008  |  24 | 175      | Å®Íõ     |        2 |
++--------+-----+------+-----+----------+----------+----------+
+8 rows in set
+
+mysql> insert into students(s_name,age,s_no,sex,s_height,nickName) values('Å®Íõ',19,'009','Å®',175,'Ä§Å®');
+
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+-----+------+-----+----------+----------+----------+
+| s_name | sex | s_no | age | s_height | nickName | class_id |
++--------+-----+------+-----+----------+----------+----------+
+| ºÚ÷î÷î | ÄÐ  | 001  |  22 | 175      | ÓÐÓÐ     |        3 |
+| Ð¡Ñ©ÄË | Å®  | 002  |  20 | 165      | Ñ©ÄË½´   |        2 |
+| ¿ñÈý   | Å®  | 003  |  18 | 165      | ÈËÆøÈý   |        2 |
+| Ñ¾Ñ¾   | 2   | 004  |  22 | ²»Ïê     | Ð¡ÑÅ     |        3 |
+| À×Ä·   | Å®  | 005  |  19 | 164      | À×Ä·½´   |        3 |
+| Â³Â³ÐÞ | ÄÐ  | 006  |  19 | 178      | ÎáÍõµîÏÂ |        5 |
+| ÖìÈ¸   | ÄÐ  | 007  |  19 | 175      | È¸       |        5 |
+| ÜçÜç   | Å®  | 008  |  24 | 175      | Å®Íõ     |        2 |
+| Å®Íõ   | Å®  | 009  |  19 | 175      | Ä§Å®     | NULL     |
++--------+-----+------+-----+----------+----------+----------+
+9 rows in set
+
+mysql> select s_name Ñ§Ô±ÐÕÃû,(select className from class c where c.id=s.class_id) °à¼¶Ãû³Æ from students s;
+
++----------+----------+
+| Ñ§Ô±ÐÕÃû | °à¼¶Ãû³Æ |
++----------+----------+
+| Ð¡Ñ©ÄË   | ¸ß¼¶°à   |
+| ¿ñÈý     | ¸ß¼¶°à   |
+| Â³Â³ÐÞ   | ÌØÑµ°à   |
+| ÖìÈ¸     | ÌØÑµ°à   |
+| ÜçÜç     | ¸ß¼¶°à   |
+| Å®Íõ     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select s_name Ñ§Ô±ÐÕÃû,s.class_id from students s where exists(select id from class where className='ÌØÑµ°à' and id=s.class_id);
++----------+----------+
+| Ñ§Ô±ÐÕÃû | class_id |
++----------+----------+
+| Â³Â³ÐÞ   |        5 |
+| ÖìÈ¸     |        5 |
++----------+----------+
+2 rows in set
+
+mysql> select s_name Ñ§Ô±ÐÕÃû,s.class_id from students s where exists(select id from class where className='ÌØÑµ°à');
++----------+----------+
+| Ñ§Ô±ÐÕÃû | class_id |
++----------+----------+
+| Ð¡Ñ©ÄË   |        2 |
+| ¿ñÈý     |        2 |
+| Â³Â³ÐÞ   |        5 |
+| ÖìÈ¸     |        5 |
+| ÜçÜç     |        2 |
+| Å®Íõ     | NULL     |
++----------+----------+
+6 rows in set
+
+mysql> select s_name Ñ§Ô±ÐÕÃû,s.class_id from students s where any(select id from class where className='ÌØÑµ°à' and id=s.class_id);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(select id from class where className='ÌØÑµ°à' and id=s.class_id)' at line 1
+mysql> select s_name Ñ§Ô±ÐÕÃû,class_id from students where class_id=(select class_id from students where s_name='Â³Â³ÐÞ');
+
++----------+----------+
+| Ñ§Ô±ÐÕÃû | class_id |
++----------+----------+
+| Â³Â³ÐÞ   |        5 |
+| ÖìÈ¸     | NULL     |
++----------+----------+
+2 rows in set
+
+mysql> select s_name Ñ§Ô±ÐÕÃû,class_id from students s where exists(select s_name from students s1 where s_name='Â³Â³ÐÞ' and s.class_id=s1.class_id);
++----------+----------+
+| Ñ§Ô±ÐÕÃû | class_id |
++----------+----------+
+| Â³Â³ÐÞ   |        5 |
+| ÖìÈ¸     |        5 |
++----------+----------+
+2 rows in set
+
+mysql>  

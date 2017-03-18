@@ -1,0 +1,97 @@
+/**将日期转换成年月日时分秒的格式start**/
+/*定义结束标示符*/
+delimiter $$
+/*删除函数*/
+DROP FUNCTION IF EXISTS fun_getDate;
+/*创建函数*/
+CREATE FUNCTION fun_getDate(fdate datetime) RETURNS VARCHAR(100)
+BEGIN 
+	/*定义返回的结果变量*/
+	DECLARE result VARCHAR(100) DEFAULT'';
+	/*将结果变量赋值*/
+	SET result = DATE_FORMAT(fdate,'%Y年%m月%d日 %h时%i分%s秒');
+	/*返回结果值*/
+	return result;
+END $$
+/*重新定义结束标识符*/
+delimiter;
+/*调用自定义函数*/
+SELECT fun_getDate(NOW());
+/**将日期转换成年月日时分秒的格式end**/
+
+
+/**将年龄格式化成 成年人和未成年人的格式显示start**/
+delimiter$$
+DROP FUNCTION IF EXISTS fun_getAge;
+CREATE FUNCTION fun_getAge(fage INT(10)) returns VARCHAR(10)
+BEGIN
+	/*IF...THEN...ELSEIF...THEN...ELSE...END IF;*/
+	IF fage<=18 
+	THEN 
+		RETURN '未成人年'; 
+	ELSE 
+		RETURN '成年人';
+	END IF;
+END $$
+delimiter;
+SELECT fun_getAge(13);
+SELECT fun_getAge(19);
+/**将年龄格式化成 成年人和未成年人的格式显示end**/
+
+
+/**将字符串保留指定长度num，多出部分使用省略号....替代，如果字符串个数少于num，则保留原字符串start**/
+CREATE FUNCTION fun_substring(str varchar(20),num int) returns varchar(200)
+BEGIN
+	/*判断字符串str的字符长度是否大于指定个数num*/
+	IF CHAR_LENGTH(str)<=num
+	THEN
+		RETURN str;
+	ELSEIF CHAR_LENGTH(str)>num
+	THEN
+		RETURN CONCAT(LEFT(str,num),'...');
+	END if;
+END;
+SELECT fun_substring('黑黝黝又恢复就是看回复',3) as 截取后的文本;
+SELECT fun_substring('黑黝黝',3) as 截取后的文本;
+/*可以将查询出来的结果集应用到自定义函数中*/
+SELECT fun_substring(s_name,2) from students;
+/**将字符串保留指定长度num，多出部分使用省略号....替代，如果字符串个数少于num，则保留原字符串end**/
+
+
+/**循环结构，循环拼接指定数目n个str2的字符串start**/
+delimiter$$
+DROP FUNCTION IF EXISTS fun_loopstr;
+CREATE FUNCTION fun_loopstr(str1 varchar(100),str2 varchar(100),num int) returns varchar(300)
+BEGIN
+	/*定义一个迭代的变量*/
+	DECLARE i INT DEFAULT 1;
+	/*定义一个存放结果的变量*/
+	DECLARE result varchar(200) default'';
+	/*初始化赋值*/
+	SET result = str1;
+	/*循环语句开始*/
+	loopstr:LOOP
+		/*变量迭代*/
+		SET i = i+1;
+		/*结果迭代拼接*/
+		SET result = CONCAT(result,str2);
+		/*当迭代的变量i大于指定数目时，跳出循环*/
+		IF i>num
+		THEN
+			/*跳出循环语句*/
+			LEAVE loopstr;
+		END IF;
+	/*循环语句结束*/
+	END LOOP loopstr;
+	RETURN result;
+END $$
+delimiter;
+SELECT fun_loopstr('222','/333',2);
+SELECT fun_loopstr(s_name,'/22',2) from students;
+/**循环结构end**/
+
+/*查看自定义函数的定义*/
+SHOW CREATE FUNCTION fun_loopstr;
+/*查看自定义函数的状态*/
+SHOW FUNCTION STATUS;/*查询所有函数的状态*/
+SHOW FUNCTION STATUS LIKE 'fun_%';/*查询指定类型的函数状态*/

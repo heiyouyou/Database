@@ -1,0 +1,72 @@
+mysql> alter table class students constraint chk_age check(age>23);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students constraint chk_age check(age>23)' at line 1
+mysql> alter table students constraint chk_age check(age>23);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint chk_age check(age>23)' at line 1
+mysql> alter table students constraint chk_age check(age>22);
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint chk_age check(age>22)' at line 1
+mysql> alter table students add constraint chk_age check(age>23);
+Query OK, 5 rows affected
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * fron students;
+1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fron students' at line 1
+mysql> select * from students;
++--------+------+------------+-----+----------+--------+----------+
+| s_name | sex  | s_no       | age | s_height | nick   | class_id |
++--------+------+------------+-----+----------+--------+----------+
+| 狂三   | 不详 | 2432423    |  22 | 不详     | 不详   | NULL     |
+| 大老师 | 男   | 3130454578 |  22 | 185      | 比企君 |        1 |
+| 史诗   | 不详 | 3424234234 |  25 | 不详     | 不详   |        2 |
+| 圣诞节 | 男   | 4568799675 |  24 | 176      | 呀呀呀 | NULL     |
+| 平安夜 | 男   | 879943675  |  24 | 178      | 不详   | NULL     |
++--------+------+------------+-----+----------+--------+----------+
+5 rows in set
+
+mysql> insert into students values('雪乃','女','00584',16,168,'小雪乃',3);
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+------+------------+-----+----------+--------+----------+
+| s_name | sex  | s_no       | age | s_height | nick   | class_id |
++--------+------+------------+-----+----------+--------+----------+
+| 雪乃   | 女   | 00584      |  16 | 168      | 小雪乃 |        3 |
+| 狂三   | 不详 | 2432423    |  22 | 不详     | 不详   | NULL     |
+| 大老师 | 男   | 3130454578 |  22 | 185      | 比企君 |        1 |
+| 史诗   | 不详 | 3424234234 |  25 | 不详     | 不详   |        2 |
+| 圣诞节 | 男   | 4568799675 |  24 | 176      | 呀呀呀 | NULL     |
+| 平安夜 | 男   | 879943675  |  24 | 178      | 不详   | NULL     |
++--------+------+------------+-----+----------+--------+----------+
+6 rows in set
+
+mysql> desc students;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| s_name   | varchar(20) | YES  |     | NULL    |       |
+| sex      | varchar(4)  | YES  |     | 不详    |       |
+| s_no     | varchar(20) | NO   | PRI |         |       |
+| age      | int(3)      | YES  |     | NULL    |       |
+| s_height | varchar(4)  | YES  |     | 不详    |       |
+| nick     | varchar(20) | YES  |     | 不详    |       |
+| class_id | int(10)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set
+
+mysql> insert into students values('比立','男','2342411',21,169,default,2);
+Query OK, 1 row affected
+
+mysql> select * from students;
++--------+------+------------+-----+----------+--------+----------+
+| s_name | sex  | s_no       | age | s_height | nick   | class_id |
++--------+------+------------+-----+----------+--------+----------+
+| 雪乃   | 女   | 00584      |  16 | 168      | 小雪乃 |        3 |
+| 比立   | 男   | 2342411    |  21 | 169      | 不详   |        2 |
+| 狂三   | 不详 | 2432423    |  22 | 不详     | 不详   | NULL     |
+| 大老师 | 男   | 3130454578 |  22 | 185      | 比企君 |        1 |
+| 史诗   | 不详 | 3424234234 |  25 | 不详     | 不详   |        2 |
+| 圣诞节 | 男   | 4568799675 |  24 | 176      | 呀呀呀 | NULL     |
+| 平安夜 | 男   | 879943675  |  24 | 178      | 不详   | NULL     |
++--------+------+------------+-----+----------+--------+----------+
+7 rows in set
+
+mysql> alter table class change id id int(11) auto_increment;

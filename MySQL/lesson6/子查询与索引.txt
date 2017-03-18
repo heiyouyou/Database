@@ -1,0 +1,100 @@
+/*where 子查询*/ 
+-- 语法：select * from 表1 where colName [=][in](select colName from 表2 [where.....]);
+
+select * from students;
+select * from class;
+
+/*in查询存在课程信息的学员*/
+select * from students where class_id in (select id from class);
+/*=查询存在课程信息的学员*/
+select * from students where class_id = (select id from class where className='高级班');
+select * from students where class_id = (select id from class where className='基础班');
+select * from students where class_id = (select id from class where className='中级班');
+/*=查询只适用于子查询结果集只有一条数据，多条数据只能用in*/
+select * from students where class_id = (select id from class);
+/*where子查询 end*/
+
+/*from子查询 start*/
+-- 语法：select * from (select * from 表名 [where..]) 临时表名 [where...]
+/*将内层的查询结果集作为临时表，供外层使用*/
+select * from (select students.s_name 姓名,ifnull(class.className,'未知班级') 班级 from students left join class on students.class_id = class.id) tmp
+select * from (select students.s_name 姓名,ifnull(class.className,'未知班级') 班级 from students left join class on students.class_id = class.id) tmp where tmp.班级='未知班级'
+/*from子查询 end*/
+
+/*子查询与insert结合start*/
+insert into students(s_name,age,s_no,sex,s_height,nickName,class_id) values('鲁鲁修',19,'006','男',178,'吾王殿下',(select id from class where className='特训班'));
+/*子查询与insert结合end*/
+
+/*子查询与update结合start*/
+update students set class_id=(select id from class where className='基础班') where class_id is null;
+/*子查询与update结合end*/
+
+/*子查询与delete结合start*/
+delete from students where class_id=(select id from class where className='基础班');
+delete from students where class_id in(select id from class where className='基础班');
+/*子查询与delete结合end*/
+
+/*关联子查询start*/
+select s_name 学员姓名,(select className from class c where c.id=s.class_id) 班级名称 from students s;
+/*查询存在于特训班的数据*/
+select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='特训班' and id=s.class_id);
+/*查询了所有数据*/
+select s_name 学员姓名,s.class_id from students s where exists(select id from class where className='特训班');
+/*关联子查询end*/
+
+/*两个表关联查询*/
+select s_name 学员姓名,class_id from students where class_id=(select class_id from students where s_name='鲁鲁修');
+/*自己表跟自己表关联查询*/
+select s_name 学员姓名,class_id from students s where exists(select 1 from students s1 where s_name='鲁鲁修' and s.class_id=s1.class_id) order by s_name desc,class_id;
+
+
+/***索引的理解start***/
+1、在数据库系统中是一个排序的数据结构，以协助快速查询、更新数据库表中表数据
+2、需要数据库开辟空间存储索引，在插入和修改数据的时候花费较多时间（数据变更需要建立或者重建索引）
+3、如果使用函数或者like索引就会失效。
+/*单字段索引start*/
+/*单字段索引是最常见、最简单*/
+语法：Create Index 索引名 on 表名(列名)
+create index index_s_name on students(s_name);
+/*explain分析查询语句*/
+explain select * from students where s_name='黑黝黝';
+explain select * from students where sex='男';
+/*单字段索引end*/
+
+/*唯一索引start*/
+/*唯一索引用于改善性能和保证数据的完整性，数据不允许重复，效果与单字段索引一样*/
+语法：create unique index 索引名 on 表名(列名)
+create unique index uindex_className on test(className);
+insert into test values(5,58,'高级班');
+delete from test where className='高级班';
+explain select * from test;
+/*唯一索引end*/
+
+/*组合索引start*/
+语法：create index 索引名 on 表名(列名1,列名2,....);
+create index sex_age_height_index on students(sex,age,s_height);
+create index sex_age_index on students(sex,age);
+create index sex_name_index on students(sex,s_name);
+explain select * from students where sex='女' and age<24 and s_height>165;
+explain select * from students where sex='女' and age<24;
+explain select * from students where s_name='小雪乃' and sex='女';
+explain select * from students;
+/*组合索引end*/
+
+/*删除修改索引start*/
+语法：drop index 索引名 on 表名
+drop index sex_age_height_index on students;
+注意：一般不会去修改索引，只会去重建索引。
+/*删除修改索引end*/
+
+
+一、何时使用索引：
+1、单表数据太少，索引反而会影响速度，不要加索引
+2、where后的条件，order by,group by等这样的过滤时，后面字段最后加上索引，但不是索引越多越好，要适度。
+3、联合查询和子查询等多表操作关联字段加索引。
+4、不应该对包含大量NULL字段加索引，尽量对字段设置not null。
+5、经常要进行增、改等操作的字段，不应该设置索引，索引的新建和重建会消耗时间。
+
+二、关于索引对应数据类型
+1、越小的数据类型通常更好，越小的数据类型通常在磁盘、内存和cpu缓存中只需要更少的空间，处理起来就会更快。
+2、简单的数据类型更好。整形数据比字符处理开销更小，因为字符串更复杂。在mysql中，日期时间应该用日期和时间类型，不要使用字符串类型存储时间。
