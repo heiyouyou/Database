@@ -1,0 +1,230 @@
+一、IP地址和环境变量
+查看ip地址：
+rac1->more /etc/sysconfig/network-scripts/ifcfg-eth0
+
+编辑ip地址：
+rac1->vim /etc/sysconfig/network-scripts/ifcfg-eth0
+
+重启网络服务：
+rac1->service network restart 
+
+查看环境变量：
+rac1->more ~/.bash_profile
+
+编辑环境变量：
+rac1->vim   ~/.bash_profile
+
+二、启动数据局和监听
+rac1->rlwrap  sqlplus  / as sysdba
+启动数据库：
+SQL> startup
+
+启动监听：
+rac1->lsnrctl start
+
+查看监听状态：
+rac1->lsnrctl stat
+
+如果你的环境变量没有修改....vim  ~/.bash_profile
+ORACLE_SID=pacs
+rac1->more  ~/.bash_profile
+export LANG=en
+
+注意用root用户修改正确ip地址
+rac1->su  - root
+Password: 
+[root@rac1 ~]# vim  /etc/hosts
+
+三、查看和启动oem服务
+rac1->cd $ORACLE_HOME
+rac1->ls
+rac1->pwd
+rac1->cd bin
+rac1->ls
+rac1->find sqlplus 
+sqlplus
+rac1->find dbca
+dbca
+rac1->find netmgr 
+netmgr
+rac1->find rman 
+rman
+rac1->find exp 
+exp
+rac1->pwd
+/disk/ora/app/bin
+rac1->ls
+rac1->find emctl 
+emctl
+rac1->linux   oracle 10g  
+
+查看oem服务：
+rac1->emctl status dbconsole
+
+启动oem的服务：
+rac1->emctl start  dbconsole
+
+四、查看告警文件
+关闭数据库：
+SQL> shutdown immediate
+
+启动实例：
+SQL> startup nomount
+
+查看后台进程是否启动：
+SQL> ho ps -ef |grep ora_
+
+装载数据库：
+SQL> alter database  mount;
+
+启动数据库：
+SQL> alter database  open;
+
+查看告警文件位置：
+SQL> show parameter backg
+
+进入告警文件目录：
+rac1->cd /disk/ora/admin/crm/bdump
+rac1->ls
+alert_crm.log 
+
+查看倒数200行告警内容：
+rac1->tail -200 alert_crm.log 
+
+实时查看告警文件内容变化：
+rac1->tail -f alert_crm.log 
+
+五、查询内容
+查看pga内存：
+SQL> show parameter pga
+
+SQL> create table text  as select * from scott.emp;
+
+SQL> insert into text select * from text;
+
+SQL> /
+
+28 rows created.
+
+SQL> select count(*) from text;
+
+ SQL> select empno,sal from text 
+
+
+SQL> create index idx_no on text(empno);
+
+SQL> select empno,sal from text 
+  2  where empno<7400;
+
+SQL> select empno,sal from text 
+  2  where empno='736
+
+SQL> update text  
+  2  set empno='7200'
+  3  where rownum<2;
+
+SQL> select empno,sal from text 
+  2  where empno='7200';
+    
+SQL> show user
+
+SQL> select empno,ename,sal from emp;
+
+SQL> select empno,ename,sal from emp 
+  2  where empno='7369';
+
+SQL> update emp 
+  2  set sal=1800
+  3  where empno='7369';
+
+SQL> select empno,ename,sal from emp 
+  2  where empno='7369';
+
+SQL> commit;
+
+Commit complete.
+
+SQL> sga system global area   
+
+SQL> share  
+
+SQL> pga  progarm   private 
+
+SQL> update emp 
+  2  set sal=3000
+  3  where empno='7369';
+
+1 row updated.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select ename,sal from emp
+  2  order  by sal desc ;
+
+SQL> dml   delete insert  update  ---->redo  
+
+SQL> ddl   ----alter  truncate  .....>redo 
+
+SQL> select ----not redo 
+
+SQL> select * from scott.dept;
+
+SQL> select a.*,rowid from scott.dept a;
+
+SQL> select * from dept 
+  2  where deptno=10;
+
+六 设置日志模式
+查看归档模式：
+SQL> archive log list;
+
+SQL> ho df  -h
+
+SQL> ho ls /log
+lost+found
+
+查看归档路径参数：
+SQL> show parameter log_archive_dest_1
+
+修改归档路径/log:
+SQL> alter system set log_archive_dest_1='location=/log';
+
+SQL> show parameter log_archive_dest_1
+
+数据库在mount状态开启归档模式：
+SQL> shutdown immediate
+
+SQL> startup mount
+
+SQL> alter database archivelog;
+
+Database altered.
+
+SQL> alter database  open;
+
+Database altered.
+
+SQL> archive log list;
+
+手动切换日志：
+SQL> alter system switch logfile;
+
+System altered.
+
+SQL> alter system switch logfile;
+
+SQL> desc  v$logfile
+
+SQL> col member format a30;
+SQL> select GROUP#,STATUS,MEMBER from v$logfile;
+
+SQL> archive log list;
+
+SQL> exit
+
+查看后台进程：
+rac1->ps -ef |grep ora_
+
+

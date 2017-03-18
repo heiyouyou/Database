@@ -1,0 +1,168 @@
+--创建表
+--格式：create table 表的名称(字段名，字段类型)
+create table student(
+       --number表示数字类型
+       --面试题：
+       --当是number：插入的数字无论是多少就显示多少，如：3434.43==>3424.43
+       --当有一个参数number(5)不能为负数：5表示整数位的最大位数；如：43242==>43242
+       --当有两个参数number(5,2)：第一个参数表示数字的最大位数，第二个参数（正数）表示小数点后面的位数（不足就以0补上，如：433.3==>433.30），也即是整数的最大位数就是：5-2=3
+       --当第二个参数为负数number(5,-2)时，小数点后面的全部舍去，然后从整数部分的右边取该负数绝对值的位数，当成小数进行四舍五入计算，而且整数部分的最大位数还是：5-(-2)=7如：1314345.3==>1314300
+       --多个字段用逗号隔开，最后一个字段不用逗号
+       student_id number(5,-2),
+       --varchar2(100)表示字符类型，100表示最大字节数，
+       --数字字母都是占用一个字节，而一个中文字符在gbk中占用两个字节，在utf-8中占用三个字节
+       student_name varchar2(10)
+)
+
+-- 查询表
+--- 格式：select * from 表的名称
+-- *表示查询表中的所有字段
+select * from student
+
+--插入数据（记录）
+---注意：当有多条sql语句执行时，多条插入语句之间用分号隔开，还可以重复插入多条相同的数据
+--格式：insert into 表名称 values(数据1,数据2)
+--字符类型不能用双引号，要用单引号
+insert into student values(124,'黑有有');--显示：100,黑有有
+insert into student values(52.454,'hehe');--显示：100,hehe
+insert into student values(131.3,'free');--显示：100,free
+insert into student values(1314345.3,'keke');--显示：131400,keke
+insert into student values(1244324,'有有')--显示：1244300,有有
+
+--删除表，注意：表已经不存在了
+--格式：drop table 表名称
+drop table student
+
+--删除表中的某条数据（记录）
+--格式：delete from 表的名称 where 可以标识某条（行）数据的字段
+delete from student where student_name = '黑有有'
+delete from student where student_id = 32
+delete from student where student_name = '有有'
+
+--删除表中的所有数据，但是表还是存在的
+--格式：delete  from 表的名称
+delete from student
+
+--commit将增删改的数据提交到数据库中，这样才是真正的保存了数据
+--注意：如果没有提交commit，那么改动的数据是不能够保存在数据库中，在当前窗口能够看到的数据只是脏数据（伪数据）
+commit;
+
+--撤销（相当于ctrl+z），多次执行就是回到改动前多少次，可以回滚 ，保护数据
+--注意：不能撤销commit(提交)，和drop(删除表)的操作
+rollback;
+
+
+
+
+create table student(
+       student_id number(5,2),
+       --varchar2(10),最大长度是4000字节，一开始定义了字节数，它的长度是由实际的字符数决定的，属于可变长度
+       student_name varchar2(10),
+       --char(10),最大长度是2000字节，一开始定义了字节数，它的长度就是多少，无论你实际的字符数是多少，不足的它会自动补上够定义的长度，属于固定长度
+       student_age char(10),
+       --date：日期中文环境下格式："22-5月-16'(dd-mm-yy)，英文环境格式下：'11-APR-71'
+       student_birthday date,            
+)
+
+
+--插入语句中有一条出错，则会在遇到该条语句之前，之前其他语句都是会成功插入表中的，当遇到该条错误语句时，就会停止插入
+insert into student values(1,'vicky','12','22-5月-2016');
+insert into student values(2,'keke',30,'23-5月-16');
+insert into student values(3,'jery',29,'24-5月-16');
+--可以用to_date()转换日期格式
+insert into student values(4,'arry',32,to_date('2015-5-22','yy-mm-dd'))
+
+-- 查看当前系统时间 sysdate
+-- dual虚表：其实是一个不存在的表，它就是为了代替一下表的概念
+select sysdate from dual;
+
+-- DESC语句 查询我们当前表的表结构，desc是sql指令，要在命令模式下写
+-- desc student
+
+select * from student
+select * from student2016
+
+drop table student
+
+-- 修改表，表结构 都是用alter
+-- alter table 旧的表名 rename to 新的表名，mysql也支持
+alter table student rename to student2016
+-- rename 旧的表名 to 新的表名，这种格式只有oracle支持
+rename student2016 to student 
+
+-- 增加表中的字段（列）修改表结构
+-- 格式：alter table 表名 add(字段名 字段类型)
+alter table student add(student_hobby varchar2(30))
+-- 支持同时添加多个字段，用逗号隔开
+alter table student add(student_friend char(200),student_teacher varchar2(100))
+
+-- 删除表中的字段（列）
+-- 格式：alter table 表名 drop(字段名) 
+alter table student drop(hobby)
+-- 支持同时删除多个字段，删除多个字段之间用逗号隔开
+alter table student drop(student_hobby,student_friend)
+
+-- 修改字段的类型或者类型值
+-- 格式：alter table 表名 modify(字段名 字段类型)
+-- 修改字段的类型，该字段必须是空的
+alter table student modify(student_teacher number(2))
+-- 修改字段的类型区间，一定要大于原来的区间
+alter table student modify(student_id number(7,3))
+
+
+
+
+
+create table student(
+     student_id number(5),
+     student_name varchar2(1000)  
+)
+
+select * from student
+
+drop table student
+
+-- 全部插入
+insert into student values(24,'嘿嘿嘿');
+-- 部分插入
+-- 格式：insert into 表名(字段名) value(数据)
+insert into student(student_id) values(25);
+insert into student(student_name) values('tencent');
+-- 部分插入 多个插入用逗号隔开
+insert into student(student_id,student_name) values(26,'youyou');
+
+-- 部分字段查询
+-- 数据库优化的时候特别忌讳  *  
+-- 格式：select 字段名 from 表名
+select student_id from student
+select student_name from student
+-- 多个字段查询可用逗号隔开
+select student_id,student_name from student
+
+delete from student where student_name = 'youyou'
+
+-- 修改表中记录（数据）update
+-- 格式：update 表名 set 新字段 = 值 where 某个字段的标识
+update student set student_name = '黑有有' where student_name = 'tencent'
+update student set student_id = 1 where student_name = '嘿嘿嘿' 
+
+
+
+
+create table teacher(
+       teacher_id number(10),
+       teacher_name varchar2(200),
+       teacher_sex char(10),
+       teacher_age number(5)       
+)
+
+select * from teacher
+drop table teacher
+insert into teacher values(1,'Jery','男',29);
+insert into teacher values(2,'KeKe','男',30);
+insert into teacher values(3,'mini','女',22);
+insert into teacher values(4,'vicky','女',21);
+
+-- 更改多个字段时，用逗号隔开
+update teacher set teacher_id = 5,teacher_age = 23,teacher_sex = '男' where teacher_name = 'vicky'
+

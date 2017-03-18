@@ -1,0 +1,112 @@
+SELECT * FROM T_USER;
+SELECT USER_ID,USER_NAME,USER_PASSWORD,USER_SEX,USER_PROVINCE,USER_CITY,
+USER_MOBILE_PHONE FROM T_USER;
+DELETE FROM T_USER WHERE USER_ID = 2;
+-- 注意了：如果表中的数据已经有触犯了某种约束的特点，则不能添加，除非将违反约束条件的数据删除，才能添加
+-- 添加主键约束
+-- 特点：唯一性，非空性
+-- 思想：唯一性：表中在约束的字段下没有相同的数据，非空性：表中在约束的字段下没有空值
+-- 格式：ALTER TABLE 表名 ADD CONSTRAINT 自定义主键名 PRIMARY KEY (需要添加约束的字段名)
+-- 主键约束可以同时约束多个字段，用逗号隔开
+-- 添加主键约束的表，如果表中的数据已经有触犯了主键约束的特点，则不能添加，除非将违反约束条件的数据删除
+ALTER TABLE T_USER ADD CONSTRAINT PK_USER_ID PRIMARY KEY (USER_ID,USER_NAME);
+-- 一个表中只能出现一个主键，不能出现多个，否则出错，不管键名相不相同
+ALTER TABLE T_USER ADD CONSTRAINT PK_USER_ID PRIMARY KEY (USER_NAME);
+-- 删除主键约束
+-- 格式：ALTER TABLE 表名 DROP CONSTRAINT 需要删除的主键名
+ALTER TABLE T_USER DROP CONSTRAINT PK_USER_ID; 
+DELETE FROM T_USER WHERE USER_ID = 1 AND USER_ID = 3;
+DELETE FROM T_USER WHERE USER_ID = 2;
+DELETE FROM T_USER WHERE USER_ID = 0 OR USER_ID = 7;
+-- 如果添加的数据中出现NULL或者空，也是违反了主键约束的非空性特点
+INSERT INTO T_USER(USER_ID,USER_NAME) VALUES(0,'');
+-- 该条语句违反了主键约束的唯一性条件
+INSERT INTO T_USER(USER_ID,USER_NAME) VALUES(2,'HH');
+UPDATE T_USER SET USER_NAME = '黑有有' WHERE USER_ID = 2;
+SELECT * FROM T_USER;
+
+-- 唯一约束 UNIQUE
+-- 特点：唯一性
+-- 思想：唯一性：表中在约束的字段下没有相同的数据
+-- 格式：ALTER TABLE 表名 ADD CONSTRAINT 自定义键名 UNIQUE (要约束的字段)
+-- 同样也支持多个字段约束
+ALTER TABLE T_USER ADD CONSTRAINT UN_USER_TEL UNIQUE (USER_MOBILE_PHONE,USER_ID)
+-- 删除唯一约束键
+-- 格式：ALTER TABLE 表名 DROP CONSTRAINT 需要删除的唯一约束
+ALTER TABLE T_USER DROP CONSTRAINT UN_USER_TEL;
+-- 一个表中支持添加多个唯一约束键
+ALTER TABLE T_USER ADD CONSTRAINT UN_USER_ID UNIQUE (USER_ID);
+
+-- 检查约束 CHECK
+-- 特点：根据条件来约束指定字段下的数据
+-- 思想：就是根据指定条件来约束指定字段下的数据不能出现条件之外的值
+-- 格式：ALTER TABLE 表名 ADD CONSTRAINT 键名 CHECH (约束指定字段的条件)
+ALTER TABLE T_USER ADD CONSTRAINT CK_USER_SEX CHECK (USER_SEX = '女' OR USER_SEX = '男');
+-- -- 一个表中支持添加多个检查约束
+ALTER TABLE T_USER ADD CONSTRAINT CK_USER_SEXNULL CHECK (USER_SEX IS NOT NULL);
+ALTER TABLE T_USER ADD CONSTRAINT CK_USER_AGE CHECK (
+      USER_AGE >=0 AND USER_AGE <=200
+)
+-- 删除检查约束
+-- 格式：ALTER TABLE 表名 DROP CONSTRAINT 需要删除的检查约束
+ALTER TABLE T_USER DROP CONSTRAINT CK_USER_SEX;
+-- 该条语句违反了检查约束的性别不能为空的条件，报错
+INSERT INTO T_USER(USER_ID,USER_SEX) VALUES(0,NULL);
+-- 该条语句违反了检查约束的年龄不能大于200的条件，报错
+INSERT INTO T_USER(USER_AGE) VALUES(2000);
+ALTER TABLE T_USER ADD(USER_AGE NUMBER(10));
+SELECT * FROM T_USER;
+DELETE FROM T_USER WHERE USER_ID = 2;
+
+
+-- 建立一个成绩表（从表）
+CREATE TABLE ORACLE_SCORE(
+       STU_ID NUMBER(10),
+       STU_SCORE NUMBER(3)
+)
+CREATE TABLE ORACLE_SCORE(
+       USER_ID NUMBER(10),
+       SCORE   NUMBER(3)
+);
+
+-- 外键约束 FOREIGN KEY
+-- 特点：有主从关系，外键约束建立在从表上面的
+-- 思想：要从主表中找到约束条件的关联字段存在，才可以将数据插入从表中，
+-- 而删除主表中的关联的字段数据时，不能直接删除，必须借助ON DELETE CASCADE 或者 ON DELETE SET NULL来删除
+-- 而直接删除从表中的关联字段数据是可以删除的
+-- 只能通过主表删除从表数据，不能通过从表删除主表数据
+-- 格式：ALTER TABLE 从表名 ADD CONSTRAINT 外键名 FOREIGN KEY(要关联的从表字段) REFERENCES 主表名(要关联的主表字段)
+ALTER TABLE ORACLE_SCORE ADD CONSTRAINT  FK_ORSR_ID FOREIGN KEY(USER_ID) REFERENCES T_USER(USER_ID)
+-- ON DELETE CASCADE;-- ON DELETE CASCADE:当删除主表中的一条数据时，从表中对应的数据也会被删除
+ON DELETE SET NULL; -- ON DELETE SET NULL：当删除主表中的一条数据时，从表对应的字段数据变成空NULL（删除主表时将从表的外键设置为null）
+DROP TABLE ORACLE_SCORE
+-- 找到了符合外键约束的关联字段，可以插入数据到从表中
+INSERT INTO ORACLE_SCORE(USER_ID,SCORE) VALUES(5,100);
+-- 该语句在主表中没有找到关联字段的存在，所以违反了外键约束的条件，报错 
+INSERT INTO ORACLE_SCORE(USER_ID,SCORE) VALUES(6,90);
+
+-- 也可以在创建表的时候添加约束，相当于添加字段一样
+CREATE TABLE ORACLE_SCORE(
+       USER_ID NUMBER(10),
+       SCORE   NUMBER(3),
+       CONSTRAINT  FK_ORSR_ID 
+       FOREIGN KEY(USER_ID) REFERENCES T_USER(USER_ID),
+       CONSTRAINT CK_ORSE_SCORE CHECK (SCORE<=100 AND SCORE>=0)
+);
+-- 直接这样删除主表中的一条关联数据，是不能删除的，违反了外键约束的条件
+-- 必须用ON DELETE CASCADE 或 ON DELETE SET NULL 来达到删除
+DELETE FROM T_USER WHERE USER_ID = '5';
+-- 而直接删除从表中的关联字段数据是可以删除的
+-- 只能通过主表删除从表数据，不能通过从表删除主表数据
+DELETE FROM ORACLE_SCORE WHERE USER_ID = '5'
+-- 修改约束名称
+-- 格式：ALTER TABLE 表名 RENAME CONSTRAINT 旧约束名 TO 新约束名
+ALTER TABLE ORACLE_SCORE RENAME CONSTRAINT FK_ORSR_ID TO FK_ID
+SELECT * FROM T_USER
+SELECT * FROM ORACLE_SCORE
+UPDATE T_USER SET USER_ID = 2 WHERE USER_ID = 5; 
+-- DDL语句：DROP TABLE与TRUNCATE TABLE，操作父表，违反引用完整性约束
+DROP TABLE T_USER;
+ROLLBACK;
+
+

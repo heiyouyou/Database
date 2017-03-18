@@ -1,0 +1,94 @@
+--使用的是scott用户下的emp（员工信息表） 和 dept（部门表）表进行操作
+SELECT * FROM EMP;
+
+SELECT * FROM DEPT;
+--1.查询姓名为SMITH的员工信息(注意大小写)
+--- 注意:在oracle中内容区分大小写.关键字,表名字段名称不区分大小写
+SELECT * FROM EMP WHERE ENAME = 'SMITH';
+
+--2.查询20部门的所有员工信息
+SELECT * FROM EMP WHERE DEPTNO = 20;
+
+--3.查询所有JOB为CLERK的员工的员工号、员工姓名和部门号。
+SELECT EMPNO,ENAME,DEPTNO FROM EMP WHERE JOB = 'CLERK';
+
+--4.查询奖金（COMM）高于工资（SAL）的员工信息。
+SELECT * FROM EMP WHERE COMM > SAL;
+
+--5.查询奖金高于工资的20%的员工信息。
+SELECT * FROM EMP WHERE COMM > SAL*0.2;
+SELECT * FROM EMP WHERE COMM > SAL*.2;
+
+--6.查询10号部门中JOB为MANAGER和 20部门中JOB为CLERK的员工的信息。
+--注意了：OR可以用来连接两条不同的数据时（有和的意思），而AND用来连接同一条数据中的不同字段（有且的意思）
+SELECT * FROM EMP WHERE (JOB = 'MANAGER' AND DEPTNO = 10) OR (JOB = 'CLERK' AND DEPTNO = 20);
+
+--7.查询所有工种(job)不是MANAGER和CLERK，
+--且工资大于或等于2000的员工的详细信息。
+--方法1：用!=可以达到效果，但是不标准不专业
+SELECT * FROM EMP WHERE JOB != 'MANAGER' AND JOB != 'CLERK' AND SAL >= 2000;
+--方法2：<>表示不等于的意思，比较专业标准的SQL语句
+SELECT * FROM EMP WHERE JOB <>'MANAGER' AND JOB <>'CLERK' AND SAL >= 2000;
+--方法3：NOT IN(条件1,条件2)，这种方法不利于优化
+SELECT * FROM EMP WHERE JOB NOT IN('MANAGER','CLERK') AND SAL >= 2000;
+
+--8. 查询有奖金的员工的不同工种(job)。
+-- distinct: 去除重复行
+--相同工种的数据都显示了
+SELECT JOB FROM EMP WHERE COMM > 0;
+--相同工种的只显示一条数据
+-- DISTINCT (需要去掉相同记录的字段)
+SELECT DISTINCT (JOB) FROM EMP WHERE COMM > 0;
+
+--9.查询没有奖金或奖金低于100的员工信息。
+--注意了：0不是null，null表示什么数据也没有，就是没有值的意思，而0表示有值
+--SELECT * FROM EMP WHERE COMM < 100;
+SELECT * FROM EMP WHERE COMM IS NULL OR COMM < 100;
+
+--%:匹配任何数量的任何字符（模糊查找）
+--10. 查询员工名字中包含字母"S"的员工。
+--格式：SELECT * FROM 表名 WHERE 字段 LIKE '%某个字符%'
+-- 可以将LIKE理解为“像...”的意思
+--注意了：%一定要与LIKE关键字连用才有效效果
+SELECT * FROM EMP WHERE ENAME LIKE '%S%';
+
+--10.2 查询员工名字中以字母"S"开头的员工。
+SELECT * FROM EMP WHERE ENAME LIKE 'S%';
+ 
+--10.3 查询员工名字中以字母"S"结尾的员工。
+SELECT * FROM EMP WHERE ENAME LIKE '%S';
+
+--11.查询员工名字中不包含字母"Ｓ"的员工。
+SELECT * FROM EMP WHERE ENAME NOT LIKE '%S%';
+
+--12.查询员工姓名的第二字母为"M"的员工信息。
+-- _(下划线):代表任意单个字符，多个下划线可以匹配多个字符
+SELECT * FROM EMP WHERE ENAME LIKE '_M%';
+
+--13.接收用户输入的员工姓名并且根据姓名查询该员工信息。
+ select * from emp where ename = '&员工姓名';
+ SELECT * FROM EMP WHERE ENAME = '&JAMES'
+ 
+--desc:降序排序
+--asc(默认):升序排序
+--14.查询员工的姓名和薪水，并且按照薪水从高到低排序
+--格式：SELECT 字段名 FROM 表名 ORDER BY 依据哪个字段排序 排序类型（ASC或者DESC）
+--按数字大小排序
+SELECT ENAME,SAL FROM EMP ORDER BY SAL;
+SELECT ENAME,SAL FROM EMP ORDER BY SAL DESC; 
+--按字母排序
+SELECT ENAME,SAL FROM EMP ORDER BY ENAME;
+SELECT ENAME,SAL FROM EMP ORDER BY ENAME ASC; 
+
+--15.查询员工的姓名和入职日期，并按入职日期从先到后进行排序。
+--升序
+SELECT ENAME,HIREDATE FROM EMP ORDER BY HIREDATE;
+--降序
+SELECT ENAME,HIREDATE FROM EMP ORDER BY HIREDATE DESC;
+
+--16.显示所有员工的姓名、工种、工资和奖金，
+--按JOB降序排序，若JOB相同则按工资升序排序。
+--注意了：ORDER BY 后面的语句不能用AND 或者 OR连接
+SELECT ENAME,JOB,SAL,COMM FROM EMP ORDER BY JOB DESC,SAL ASC;
+SELECT ENAME,JOB,SAL,COMM FROM EMP ORDER BY JOB DESC,SAL;
+SELECT * FROM EMP;
